@@ -1,0 +1,38 @@
+#platform :ios, '13.0'
+#inhibit_all_warnings!
+#
+#source 'https://github.com/CocoaPods/Specs.git'
+#source 'https://github.com/aliyun/aliyun-specs.git'
+#
+## 1. 配置Flutter Module路径（相对路径正确）
+#flutter_application_path = '../flutter_module'
+## 2. 加载Flutter的podhelper.rb脚本
+#load File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')
+#
+#target 'SwiftUI10' do
+#  use_frameworks! # 必须开启
+#  
+#  # 3. 安装Flutter Module的所有依赖
+#  install_all_flutter_pods(flutter_application_path)
+#
+#  # 您的其他Pod依赖
+#  # 例如：
+#  # pod 'SnapKit'
+#  # pod 'Alamofire'
+#end
+#
+## 4. 添加 post_install 钩子（非常重要！）
+#post_install do |installer|
+#  flutter_post_install(installer) if defined?(flutter_post_install)
+#end
+
+
+# 现有iOS工程的Podfile
+flutter_application_path = '../flutter_module' # Flutter Module的路径（根据实际调整）
+load File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')
+
+target 'SwiftUI10' do
+  use_frameworks!
+  # 引入Flutter Module的Pod依赖
+  flutter_install_all_ios_pods File.join(flutter_application_path, '.ios')
+end
