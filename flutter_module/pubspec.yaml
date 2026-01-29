@@ -30,6 +30,13 @@ dependencies:
   
   # State management - MVVM pattern
   provider: ^6.1.0
+  
+  # Network and Utilities
+  http: ^1.1.0
+  crypto: ^3.0.3
+  device_info_plus: ^10.1.0
+  shared_preferences: ^2.2.2
+  encrypt: ^5.0.3
 
 dev_dependencies:
   flutter_test:
