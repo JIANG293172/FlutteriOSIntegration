@@ -1,8 +1,13 @@
 // 快捷键配置
-// 使用 Cmd+Shift+J 在文件浏览器中定位当前编辑的文件
+// 注意：如果快捷键没生效，可能原因：
+// 1. 命令被其他扩展冲突 - 使用 Cmd+K Cmd+S 查看快捷键列表找冲突
+// 2. 命令名称不正确 - 确保命令名称与 VS Code 命令匹配
+// 3. 操作系统差异 - Mac 用 cmd，Windows/Linux 用 ctrl
+
 [
     {
-        "key": "cmd+shift+j",
-        "command": "workbench.files.action.showActiveFileInExplorer"
+        "key": "cmd+shift+l",
+        "command": "workbench.files.action.showActiveFileInExplorer",
+        "when": "explorerViewletVisible"
     }
 ]

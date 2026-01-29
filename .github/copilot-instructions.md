@@ -31,7 +31,17 @@ View (Stateless Widgets) ←→ ViewModel (Business Logic) ←→ Models (Data)
   
 - **`views/pages/`** - [CarControlPage](../flutter_module/lib/views/pages/car_control_page.dart) uses `Consumer<CarControlViewModel>` to reactively display state
   
-- **`views/widgets/`** - 8 reusable stateless widgets (HeaderCard, ClimateCard, SeatCard, etc.) accepting callbacks & model data as parameters
+- **`views/widgets/`** - 8 feature cards (HeaderCard, ClimateCard, SeatCard, SecurityCard, ChargeCard, etc.) - stateless, accept data & callbacks
+  
+- **`views/shared/`** - 7 reusable small components (PillButton, StatusItem, ActionItem, SectionTitle, etc.) - building blocks for widgets
+
+**Widget Hierarchy:**
+```
+CarControlPage (Consumer, orchestrates layout)
+  ├→ Feature Cards (views/widgets/*) - self-contained feature sections
+  │   └→ Shared Components (views/shared/*) - small reusable UI elements
+  └→ Shared Components directly - section titles, status items, etc.
+```
 
 **Key Convention:** All state mutations happen in ViewModel; Views never modify models directly.
 
@@ -91,15 +101,85 @@ cd flutter_module && flutter pub add package_name
 cd ../MyiOSApp && pod install
 ```
 
+### Hot Reload vs Hot Restart
+
+| Change Type | Use | Command |
+|-------------|-----|---------|
+| Widget UI, method logic | Hot Reload | Cmd+S or Cmd+\ |
+| Model field definitions, const globals | Hot Restart | Cmd+Shift+R |
+| Provider dependencies, imports | Hot Restart | Cmd+Shift+R |
+| Platform channel methods | Stop & re-run | Cmd+Q then `flutter run` |
+
+**Critical:** Model changes require **Hot Restart** because Provider caches immutable instances.
+
+### Adding a New Platform Channel Method
+
+**1. Register in PlatformChannelService:**
+```dart
+static void setupMethodCallHandler({
+  required Function(int battery) onBatteryUpdate,
+  required Function(String newMethod) onNewMethod,  // ← Add new handler
+}) {
+  _channel.setMethodCallHandler((call) async {
+    switch (call.method) {
+      case "updateBattery":
+        final int battery = call.arguments['battery'] as int;
+        onBatteryUpdate(battery);
+        return "...";
+      case "newMethod":  // ← Add new case
+        onNewMethod(call.arguments['data']);
+        return "...";
+      default:
+        throw PlatformException(code: "METHOD_NOT_FOUND", message: "方法未实现");
+    }
+  });
+}
+```
+
+**2. Connect handler in ViewModel `_setupPlatformChannel()`:**
+```dart
+void _setupPlatformChannel() {
+  PlatformChannelService.setupMethodCallHandler(
+    onBatteryUpdate: (battery) => _updateBattery(battery),
+    onNewMethod: (data) => _handleNewMethod(data),  // ← Connect to method
+  );
+}
+```
+
+**3. Add ViewModel method to process data and update Model:**
+```dart
+void _handleNewMethod(String data) {
+  _statusModel = _statusModel.copyWith(/* update fields */);
+  notifyListeners();
+}
+```
+
+**4. Invoke from iOS (ViewController.swift):**
+```swift
+let channel = FlutterMethodChannel(name: "com.changan.carcontrol/channel", binaryMessenger: flutterViewController.binaryMessenger)
+channel.invokeMethod("newMethod", arguments: ["data": "value"])
+```
+
 ## Critical Conventions & Gotchas
 
 | Issue | Solution |
 |-------|----------|
 | Pods won't resolve in Xcode | Always open `.xcworkspace`, not `.xcodeproj` |
-| Platform channel method not recognized | Ensure `case "methodName"` matches iOS invoke exactly; throw `PlatformException` for unknown methods |
+| Platform channel method not recognized | Ensure `case "methodName"` in PlatformChannelService matches iOS invoke exactly; throw `PlatformException` for unknown methods |
 | State not updating in UI | ViewModel method must call `notifyListeners()` after model update |
-| Widget doesn't receive updated data | Ensure widget is wrapped in `Consumer<CarControlViewModel>` |
-| Model field changes not detected | Use `copyWith()` to create new instance; direct field mutation won't trigger UI rebuild |
+| Widget doesn't receive updated data | Ensure widget is wrapped in `Consumer<CarControlViewModel>` AND Model uses `copyWith()` to create new instance |
+| Model field changes not detected by UI | Direct field mutation won't trigger Provider rebuild; MUST use `copyWith()` to create new instance |
+| Hot Reload shows old model data | Model changes need Hot Restart (Cmd+Shift+R), not Hot Reload |
+| ViewModel methods don't respond | Verify method is called in `_setupPlatformChannel()` or UI callback is connected |
+
+## Best Practices for AI Coding Agents
+
+1. **Model Immutability Required** - All `copyWith()` parameters must be nullable; use `?? this.field` pattern
+2. **ViewModel as Single Source of Truth** - Never create local state in widgets; pass all data through Consumer
+3. **Callback Naming Convention** - Use `on<Action>` for UI callbacks: `onUnlock`, `onTemperatureChanged`
+4. **Testing ViewModel** - Methods are testable without UI; `final vm = CarControlViewModel(); vm.unlockCar(); assert(vm.carModel.lockStatus == '已解锁');`
+5. **Shared Widgets are Dumb** - Never import from `views/widgets/` into other widgets; nest through pages only
+6. **Localize Channel Names** - Always define `static const String _channelName` at service level, never hardcode
 
 ## File Reference Quick Guide
 
