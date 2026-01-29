@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "flutter_module (iOS Simulator - iPhone 16 Pro)",
+            "cwd": "flutter_module",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "13CE82F4-3AE1-453B-94C6-EC3A9A231062"
+        },
+        {
+            "name": "flutter_module (iOS Physical Device - taojiang)",
+            "cwd": "flutter_module",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "00008110-0001394A02F9801E"
+        },
+        {
+            "name": "flutter_module (profile mode)",
+            "cwd": "flutter_module",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "deviceId": "simulator"
+        },
+        {
+            "name": "flutter_module (release mode)",
+            "cwd": "flutter_module",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "deviceId": "simulator"
+        }
+    ]
+}
