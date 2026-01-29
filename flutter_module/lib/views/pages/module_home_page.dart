@@ -21,40 +21,12 @@ class _ModuleHomePageState extends State<ModuleHomePage> {
     super.initState();
     // 应用启动完成后，调用iOS的getDeviceInfo方法
     _getDeviceInfo();
-    // 默认发起车辆列表请求
-    _fetchCarsByBrandCode();
+    // 车辆列表和状态请求已经移至 CarControlViewModel 中自动执行
   }
 
-  /// 发起车辆列表请求
+  /// 发起车辆列表请求 (已废弃，逻辑已移至 ViewModel)
   Future<void> _fetchCarsByBrandCode() async {
-    print('--- 开始发起车辆列表请求 ---');
-
-    // 1. 构建请求对象
-    var request = QYAPIRequest("/app2/api/v2/user/cars-by-brand-code");
-    // 设置特定的 Host
-    request.instanceHost = "https://pre-m.iov.changan.com.cn";
-
-    // 2. 准备业务参数
-    var params = {
-      "brandCode": "OX",
-      "token": "rH81PymvQOQPR78ZaCag5qFD8M1sulio",
-      "type": "0",
-    };
-
-    // 3. 发起请求
-    // 注意：根据抓包数据，该接口使用 application/x-www-form-urlencoded
-    QYNetworkManager.shared
-        .request(request, params: params)
-        .then((response) {
-          if (response.success) {
-            print('车辆列表请求成功: ${response.originalData}');
-          } else {
-            print('车辆列表请求失败: ${response.message}');
-          }
-        })
-        .catchError((error) {
-          print('车辆列表请求异常: $error');
-        });
+    // 逻辑已移至 CarControlViewModel.fetchCarList()
   }
 
   /// 调用iOS的getDeviceInfo方法获取设备信息

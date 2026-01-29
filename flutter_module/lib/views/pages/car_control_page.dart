@@ -26,68 +26,117 @@ class CarControlPage extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             children: [
-              HeaderCard(
-                battery: carModel.battery,
-                range: carModel.range,
-                lockStatus: carModel.lockStatus,
-              ),
-              const SizedBox(height: 16),
-              const CarImageCard(),
-              const SizedBox(height: 16),
-              StatusRow(
-                vehicleStatus: carModel.status,
-                tirePressure: carModel.tirePressure,
-                doorStatus: carModel.doorStatus,
-              ),
-              const SizedBox(height: 16),
-              const SectionTitle(title: '快捷控制'),
-              const SizedBox(height: 10),
-              QuickActionsGrid(
-                onUnlock: viewModel.unlockCar,
-                onLock: viewModel.lockCar,
-                onAirCondition: viewModel.startAirCondition,
-                onLights: viewModel.turnOnLights,
-                onFuelDoor: viewModel.openFuelDoor,
-                onLocate: viewModel.locateCar,
-              ),
-              const SizedBox(height: 16),
-              const SectionTitle(title: '空调'),
-              const SizedBox(height: 10),
-              ClimateCard(
-                targetTemperature: statusModel.targetTemperature,
-                climateAuto: statusModel.climateAuto,
-                climateDefog: statusModel.climateDefog,
-                onTemperatureChanged: viewModel.updateTargetTemperature,
-                onAutoPressed: viewModel.toggleClimateAuto,
-                onDefogPressed: viewModel.toggleClimateDefog,
-              ),
-              const SizedBox(height: 16),
-              const SectionTitle(title: '座椅'),
-              const SizedBox(height: 10),
-              SeatCard(
-                seatHeatingEnabled: statusModel.seatHeatingEnabled,
-                driverSeatHeating: statusModel.driverSeatHeating,
-                passengerSeatHeating: statusModel.passengerSeatHeating,
-                onHeatingToggled: (_) => viewModel.toggleSeatHeating(),
-              ),
-              const SizedBox(height: 16),
-              const SectionTitle(title: '安全'),
-              const SizedBox(height: 10),
-              SecurityCard(
-                doorLockStatus: statusModel.doorLockStatus,
-                windowStatus: statusModel.windowStatus,
-                trunkStatus: statusModel.trunkStatus,
-              ),
-              const SizedBox(height: 16),
-              const SectionTitle(title: '充电'),
-              const SizedBox(height: 10),
-              ChargeCard(
-                battery: carModel.battery,
-                range: carModel.range,
-                chargeProgress: statusModel.chargeProgress,
-                estimatedTime: statusModel.estimatedTime,
-              ),
-              const SizedBox(height: 24),
+              // 车辆切换选择器
+              if (viewModel.carList.isNotEmpty)
+                Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: viewModel.selectedCar?.carId,
+                      isExpanded: true,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      items: viewModel.carList.map((car) {
+                        return DropdownMenuItem<String>(
+                          value: car.carId,
+                          child: Text(
+                            car.carName.isNotEmpty ? car.carName : '未命名车辆 (${car.carId.substring(car.carId.length - 4)})',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? carId) {
+                        if (carId != null) {
+                          final selected = viewModel.carList.firstWhere((c) => c.carId == carId);
+                          viewModel.selectCar(selected);
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              
+              if (viewModel.isLoading)
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              else ...[
+                HeaderCard(
+                  battery: carModel.battery,
+                  range: carModel.range,
+                  lockStatus: carModel.lockStatus,
+                ),
+                const SizedBox(height: 16),
+                const CarImageCard(),
+                const SizedBox(height: 16),
+                StatusRow(
+                  vehicleStatus: carModel.status,
+                  tirePressure: carModel.tirePressure,
+                  doorStatus: carModel.doorStatus,
+                ),
+                const SizedBox(height: 16),
+                const SectionTitle(title: '快捷控制'),
+                const SizedBox(height: 10),
+                QuickActionsGrid(
+                  onUnlock: viewModel.unlockCar,
+                  onLock: viewModel.lockCar,
+                  onAirCondition: viewModel.startAirCondition,
+                  onLights: viewModel.turnOnLights,
+                  onFuelDoor: viewModel.openFuelDoor,
+                  onLocate: viewModel.locateCar,
+                ),
+                const SizedBox(height: 16),
+                const SectionTitle(title: '空调'),
+                const SizedBox(height: 10),
+                ClimateCard(
+                  targetTemperature: statusModel.targetTemperature,
+                  climateAuto: statusModel.climateAuto,
+                  climateDefog: statusModel.climateDefog,
+                  onTemperatureChanged: viewModel.updateTargetTemperature,
+                  onAutoPressed: viewModel.toggleClimateAuto,
+                  onDefogPressed: viewModel.toggleClimateDefog,
+                ),
+                const SizedBox(height: 16),
+                const SectionTitle(title: '座椅'),
+                const SizedBox(height: 10),
+                SeatCard(
+                  seatHeatingEnabled: statusModel.seatHeatingEnabled,
+                  driverSeatHeating: statusModel.driverSeatHeating,
+                  passengerSeatHeating: statusModel.passengerSeatHeating,
+                  onHeatingToggled: (_) => viewModel.toggleSeatHeating(),
+                ),
+                const SizedBox(height: 16),
+                const SectionTitle(title: '安全'),
+                const SizedBox(height: 10),
+                SecurityCard(
+                  doorLockStatus: statusModel.doorLockStatus,
+                  windowStatus: statusModel.windowStatus,
+                  trunkStatus: statusModel.trunkStatus,
+                ),
+                const SizedBox(height: 16),
+                const SectionTitle(title: '充电'),
+                const SizedBox(height: 10),
+                ChargeCard(
+                  battery: carModel.battery,
+                  range: carModel.range,
+                  chargeProgress: statusModel.chargeProgress,
+                  estimatedTime: statusModel.estimatedTime,
+                ),
+                const SizedBox(height: 24),
+              ],
             ],
           ),
         );
