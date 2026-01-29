@@ -6,7 +6,28 @@ import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart' as http_io;
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:flutter/foundation.dart';
+
+/// 全局代理配置，用于抓包调试
+class MyHttpOverrides extends HttpOverrides {
+  final String? proxy;
+  MyHttpOverrides(this.proxy);
+
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    final client = super.createHttpClient(context);
+    // 如果提供了具体的代理地址（如 "192.168.1.100:8888"），则强制使用该代理
+    if (proxy != null && proxy!.isNotEmpty) {
+      client.findProxy = (uri) => "PROXY $proxy";
+    }
+    // 允许所有证书（抓包工具通常使用自签名证书）
+    client.badCertificateCallback =
+        (X509Certificate cert, String host, int port) => true;
+    return client;
+  }
+}
 
 /// API响应模型
 class QYAPIResponse {
@@ -75,7 +96,8 @@ class QYAPIResponse {
 
 /// API请求模型
 class QYAPIRequest {
-  static String host = "";
+  static String host = "https://int.qiyuan.changan.com.cn";
+  String? instanceHost;
   String path = "/";
   Map<String, dynamic>? params;
   String? pathParam;
@@ -125,7 +147,8 @@ class QYAPIRequest {
     }
 
     // 1.原始url
-    var urlStr = host + path;
+    var currentHost = instanceHost ?? host;
+    var urlStr = currentHost + path;
     // 不是以/ 打头的不处理
     if (!path.startsWith("/")) {
       urlStr = path;
@@ -160,15 +183,30 @@ class QYNetworkManager {
   final Duration timeout = Duration(seconds: 30);
   late SharedPreferences _prefs;
   late DeviceInfoPlugin _deviceInfo;
+  http.Client? _client;
+  Future<void>? _initFuture;
 
-  QYNetworkManager._private() {
-    _init();
+  QYNetworkManager._private();
+
+  Future<void> _ensureInitialized() async {
+    if (_initFuture != null) return _initFuture;
+    _initFuture = _init();
+    return _initFuture;
   }
 
   Future<void> _init() async {
     _prefs = await SharedPreferences.getInstance();
     _deviceInfo = DeviceInfoPlugin();
     _kNetUUID = await _getUUID();
+    _client = _createHttpClient();
+  }
+
+  /// 创建支持抓包的HTTP客户端
+  http.Client _createHttpClient() {
+    final ioClient = HttpClient();
+    ioClient.badCertificateCallback =
+        (X509Certificate cert, String host, int port) => true;
+    return http_io.IOClient(ioClient);
   }
 
   /// 发起请求
@@ -178,6 +216,9 @@ class QYNetworkManager {
     Map<String, dynamic>? params,
   }) async {
     try {
+      await _ensureInitialized();
+      final client = _client!;
+
       // 处理URL
       var url = request.fullUrl();
       if (!url.startsWith("http")) {
@@ -185,45 +226,60 @@ class QYNetworkManager {
       }
 
       // 优先使用传入的 params，如果没有则使用 request.params
-      var finalParams = handleParams(params ?? request.params);
-      var headers = await handleHeader(finalParams);
+      var finalParams = params ?? request.params;
+      var headers = await handleHeader(finalParams, request: request);
+
+      if (kDebugMode) {
+        print('--- 网络请求开始 ---');
+        print('URL: $url');
+        print('Method: $method');
+        print('Headers: $headers');
+        print('Params: $finalParams');
+      }
 
       http.Response response;
+      var body = finalParams != null ? jsonEncode(finalParams) : null;
+
+      // 处理参数转换 (对于 form-urlencoded，Map 的值必须是 String)
+      dynamic requestBody;
+      if (headers["Content-Type"]?.contains("x-www-form-urlencoded") == true) {
+        if (finalParams != null) {
+          requestBody = finalParams.map(
+            (key, value) => MapEntry(key, value.toString()),
+          );
+        }
+      } else {
+        requestBody = body;
+      }
 
       // 根据请求方法发起请求
       switch (method.toLowerCase()) {
         case "get":
-          response = await http
+          response = await client
               .get(Uri.parse(url), headers: headers)
               .timeout(timeout);
           break;
         case "put":
-          response = await http
-              .put(
-                Uri.parse(url),
-                headers: headers,
-                body: jsonEncode(finalParams),
-              )
+          response = await client
+              .put(Uri.parse(url), headers: headers, body: requestBody)
               .timeout(timeout);
           break;
         case "delete":
-          response = await http
-              .delete(
-                Uri.parse(url),
-                headers: headers,
-                body: jsonEncode(finalParams),
-              )
+          response = await client
+              .delete(Uri.parse(url), headers: headers, body: requestBody)
               .timeout(timeout);
           break;
         default: // post
-          response = await http
-              .post(
-                Uri.parse(url),
-                headers: headers,
-                body: jsonEncode(finalParams),
-              )
+          response = await client
+              .post(Uri.parse(url), headers: headers, body: requestBody)
               .timeout(timeout);
           break;
+      }
+
+      if (kDebugMode) {
+        print('--- 网络请求完成 ---');
+        print('Status Code: ${response.statusCode}');
+        print('Response: ${response.body}');
       }
 
       // 处理响应
@@ -239,8 +295,11 @@ class QYNetworkManager {
         });
       }
     } catch (error) {
-      print("Network error: $error");
-      return QYAPIResponse({"code": -100, "msg": "网络异常，请稍后再试"});
+      if (kDebugMode) {
+        print("--- 网络请求异常 ---");
+        print("Error: $error");
+      }
+      return QYAPIResponse({"code": -100, "msg": "网络异常: $error"});
     }
   }
 
@@ -274,10 +333,27 @@ class QYNetworkManager {
   }
 
   /// 处理头部
-  Future<Map<String, String>> handleHeader(Map<String, dynamic>? params) async {
+  Future<Map<String, String>> handleHeader(
+    Map<String, dynamic>? params, {
+    QYAPIRequest? request,
+  }) async {
+    // 如果是特定的 Host，使用简化的 Header
+    if (request?.instanceHost == "https://pre-m.iov.changan.com.cn") {
+      return {
+        "Host": "pre-m.iov.changan.com.cn",
+        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+        "vcs-app-id": "inCall",
+        "User-Agent":
+            "inCallOCPodSDK_Example/1.0 CFNetwork/3826.500.131 Darwin/24.5.0",
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "zh-CN,zh-Hans;q=0.9",
+      };
+    }
+
     var timeInterval = DateTime.now().millisecondsSinceEpoch;
     var timeStamp = "$timeInterval";
-    var jsonString = dicToSortJSON(params) ?? "{}";
+    var jsonString = dicToSortJSON(params) ?? "";
 
     var sign = jsonString + timeStamp + "J5i6UkJi8voBEEyE1g5q";
     var md5Sign = md5.convert(utf8.encode(sign)).toString().toUpperCase();
@@ -287,21 +363,33 @@ class QYNetworkManager {
     var deviceSDK = await _getDeviceSDK();
     var operatorName = await _getOperatorName();
 
+    // 辅助函数：确保 Header 值为 ASCII 字符
+    String toAscii(String value) {
+      if (value.isEmpty) return "";
+      try {
+        // 如果包含非 ASCII 字符，进行 URL 编码
+        if (value.runes.any((r) => r > 127)) {
+          return Uri.encodeComponent(value);
+        }
+      } catch (_) {}
+      return value;
+    }
+
     return {
       "token": QYApiConfig.shared.userToken,
       "zh-sign": md5Sign,
       "os": Platform.isIOS ? "ios" : "android",
-      "version": "1.0.0", // 实际项目中应该从配置中获取
+      "version": "2.8.7",
       "timeStamp": timeStamp,
       "Content-Type": "application/json; charset=utf-8",
       "channel": "App Store",
       "uuid": strToECB(await _getUUID()),
-      "brand": Platform.isIOS ? "苹果" : "Android",
-      "model": deviceModel,
-      "manuFacture": Platform.isIOS ? "苹果" : "Android",
-      "operatorName": operatorName,
-      "networkState": "4G", // 实际项目中应该检测网络状态
-      "deviceSDK": deviceSDK,
+      "brand": Platform.isIOS ? "Apple" : "Android",
+      "model": toAscii(deviceModel),
+      "manuFacture": Platform.isIOS ? "Apple" : "Android",
+      "operatorName": toAscii(operatorName),
+      "networkState": "4G",
+      "deviceSDK": toAscii(deviceSDK),
       "X-VCS-User-Token": QYApiConfig.shared.userToken,
     };
   }
@@ -367,7 +455,7 @@ class QYNetworkManager {
 
   /// 将字典转换为排序后的JSON字符串
   String? dicToSortJSON(Map<String, dynamic>? dic) {
-    if (dic == null) return "{}";
+    if (dic == null || dic.isEmpty) return "";
     try {
       // 对键进行排序
       var sortedKeys = dic.keys.toList()..sort();
@@ -377,7 +465,7 @@ class QYNetworkManager {
       }
       return jsonEncode(sortedMap);
     } catch (e) {
-      return "{}";
+      return "";
     }
   }
 }
@@ -385,7 +473,7 @@ class QYNetworkManager {
 /// API配置
 class QYApiConfig {
   static final QYApiConfig shared = QYApiConfig._private();
-  String baseHost = "https://api.example.com";
+  String baseHost = "https://int.qiyuan.changan.com.cn";
   String userToken = "";
 
   QYApiConfig._private();

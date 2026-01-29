@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'views/pages/module_home_page.dart';
 import 'services/router_service.dart';
+import 'services/qy_network_manager.dart';
 
 void main() {
   // 确保 WidgetsFlutterBinding 初始化
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 配置全局 HTTP 代理（用于抓包调试）
+  // 在实际生产环境中，通常不需要设置，或者根据编译配置决定
+  HttpOverrides.global = MyHttpOverrides(null); // null 表示自动使用系统代理
+
   // 初始化路由服务
   RouterService.initialize();
   // 注册示例路由处理器

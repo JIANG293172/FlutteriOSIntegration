@@ -7,7 +7,7 @@ description: "A new Flutter module project."
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# Read more about Android versioning at https://developer.android.com/studio/publishing
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
@@ -37,18 +37,19 @@ dependencies:
   device_info_plus: ^10.1.0
   shared_preferences: ^2.2.2
   encrypt: ^5.0.3
+  url_launcher: ^6.1.11
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
 
-# For information on the generic Dart part of this file, see the
+# For information about the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 flutter:
   # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
+  # included in your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
 
@@ -81,7 +82,7 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  # For details regarding fonts from package dependencies,
+  # For details about fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
 

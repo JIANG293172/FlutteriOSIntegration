@@ -9,11 +9,35 @@
 import UIKit
 // 现有iOS工程的ViewController中
 import Flutter
+import WebKit
 
 class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 设置导航栏左侧按钮
+        setupLeftBarButton()
+        
         openFlutterPage()
+    }
+    
+    func setupLeftBarButton() {
+        // 创建左侧按钮
+        let webViewButton = UIBarButtonItem(
+            title: "百度",
+            style: .plain,
+            target: self,
+            action: #selector(openBaiduWebView)
+        )
+        
+        // 设置为左侧按钮
+        self.navigationItem.leftBarButtonItem = webViewButton
+    }
+    
+    @objc func openBaiduWebView() {
+        // 创建并显示百度官网的 webview
+        let webViewVC = BaiduWebViewController()
+        self.navigationController?.pushViewController(webViewVC, animated: true)
     }
     
     func openFlutterPage() {
@@ -123,4 +147,64 @@ class ViewController: UIViewController {
         }
     }
     
+}
+
+// 百度官网的 WebView 控制器
+class BaiduWebViewController: UIViewController, WKNavigationDelegate {
+    private var webView: WKWebView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // 设置标题
+        self.title = "百度官网"
+        
+        // 创建 WebView
+        let webConfiguration = WKWebViewConfiguration()
+        webView = WKWebView(frame: self.view.bounds, configuration: webConfiguration)
+        webView.navigationDelegate = self
+        webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.view.addSubview(webView)
+        
+        // 加载百度官网
+        if let url = URL(string: "https://www.baidu.com") {
+            let request = URLRequest(url: url)
+            webView.load(request)
+        }
+        
+        // 添加返回按钮
+        let backButton = UIBarButtonItem(
+            title: "返回",
+            style: .plain,
+            target: self,
+            action: #selector(goBack)
+        )
+        self.navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc func goBack() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    // WKNavigationDelegate 方法
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        print("开始加载网页: \(webView.url?.absoluteString ?? "")")
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        print("网页加载完成: \(webView.url?.absoluteString ?? "")")
+    }
+    
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        print("网页加载失败: \(error.localizedDescription)")
+        
+        // 显示错误提示
+        let alert = UIAlertController(
+            title: "加载失败",
+            message: "无法加载百度官网，请检查网络连接。",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "确定", style: .default))
+        self.present(alert, animated: true)
+    }
 }

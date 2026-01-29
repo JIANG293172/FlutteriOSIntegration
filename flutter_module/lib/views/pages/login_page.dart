@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import '../../services/qy_network_manager.dart';
 
 /// 登录页面
@@ -50,18 +51,15 @@ class _LoginPageState extends State<LoginPage> {
   void _requestImageCode() {
     setState(() {
       _isLoading = true;
+      _message = '';
     });
-
-    // 构建请求参数
-    var phone = _phoneController.text;
-    var param = {"phone": strToECB(phone)};
 
     // 构建请求
     var request = QYAPIRequest("/user/getGraphics");
 
     // 发送请求
     QYNetworkManager.shared
-        .request(request, params: param)
+        .request(request)
         .then((response) {
           setState(() {
             _isLoading = false;
@@ -88,6 +86,32 @@ class _LoginPageState extends State<LoginPage> {
             _isLoading = false;
             _message = "网络异常，请稍后再试";
           });
+        });
+  }
+
+  /// 测试外部网络接口（百度首页）
+  void _testExternalRequest() {
+    setState(() {
+      _isLoading = true;
+      _message = "正在测试外部接口...";
+    });
+
+    // 使用 http 库直接请求百度，不经过签名和加密逻辑
+    http
+        .get(Uri.parse("https://www.baidu.com"))
+        .then((response) {
+          setState(() {
+            _isLoading = false;
+            _message = "外部接口测试成功! 状态码: ${response.statusCode}";
+          });
+          print("外部接口响应长度: ${response.body.length}");
+        })
+        .catchError((error) {
+          setState(() {
+            _isLoading = false;
+            _message = "外部接口测试失败: $error";
+          });
+          print("外部接口错误: $error");
         });
   }
 
@@ -423,6 +447,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20),
 
+                // 测试按钮
+                TextButton(
+                  onPressed: _isLoading ? null : _testExternalRequest,
+                  child: const Text('点击测试外部网络接口'),
+                ),
+
                 // 注册链接
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -446,13 +476,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-}
-
-/// AES-ECB加密
-String strToECB(String text) {
-  if (text.isEmpty) return "";
-  // 实际项目中应该实现AES-ECB加密
-  // 这里只是返回Base64编码的字符串作为示例
-  var bytes = utf8.encode(text);
-  return base64.encode(bytes);
 }
