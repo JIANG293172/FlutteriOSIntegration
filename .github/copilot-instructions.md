@@ -2,103 +2,119 @@
 
 ## Project Overview
 
-This is a **Flutter-to-iOS add-to-app integration** project, embedding a Flutter module into an existing native iOS app (SwiftUI). The project demonstrates platform channel communication for car control features.
+This is a **Flutter-to-iOS add-to-app integration** project with **MVVM architecture**, embedding a Flutter module into an existing native iOS app (SwiftUI). Features car control UI with platform channel communication between Flutter and native iOS.
 
-**Key Structure:**
-- `flutter_module/`: Standalone Flutter module with car control UI and method channel handlers
-- `MyiOSApp/`: Native iOS SwiftUI app that hosts the Flutter module
+**Structure:**
+- `flutter_module/`: MVVM-organized Flutter module (Models → ViewModels → Views)
+- `MyiOSApp/`: Native iOS SwiftUI app hosting the Flutter module via method channels
 
-## Architecture & Integration Pattern
+## Critical Architecture: MVVM Pattern
 
-### Flutter Module Integration
-The Flutter module is embedded in native iOS via **method channels** (Platform Channel pattern):
+The Flutter module follows strict **MVVM separation**:
 
-- **Channel Name:** `com.changan.carcontrol/channel`
-- **Location:** [flutter_module/lib/main.dart](../flutter_module/lib/main.dart#L22) - `ModuleHomePage` class
-- **Protocol:** iOS calls `updateBattery` → Flutter receives and updates state
-
-### iOS Integration
-[MyiOSApp/SwiftUI10/ViewController.swift](../MyiOSApp/SwiftUI10/ViewController.swift) demonstrates the integration:
-1. Create `FlutterEngine` instance with a unique name ("MyFlutterEngine")
-2. Run the engine and initialize `FlutterViewController`
-3. Push the Flutter view controller onto the navigation stack
-
-**Critical Setup:**
-- [Podfile](../MyiOSApp/Podfile) must load Flutter module dependencies via `flutter_install_all_ios_pods`
-- Use `use_frameworks!` in Podfile (required for Flutter integration)
-- Flutter module path is relative: `'../flutter_module'`
-
-## Key Components & Conventions
-
-### Flutter Widget Structure ([main.dart](../flutter_module/lib/main.dart))
-The UI is organized hierarchically with private widget classes for sections:
-- `CarControlPage` - Main stateless widget with ListView layout
-- `_HeaderCard`, `_CarImageCard`, `_StatusRow` - Private header components
-- `_QuickActionsGrid`, `_ClimateCard`, `_SeatCard`, `_SecurityCard`, `_ChargeCard` - Feature sections
-- `_SectionTitle` - Shared reusable title widget
-
-**Pattern:** Stateless widgets for UI structure; state managed through MethodChannel callbacks.
-
-### Method Channel Handler
-Located in `ModuleHomePage.setMethodCallHandler()`:
-```dart
-_channel.setMethodCallHandler((call) async {
-  switch (call.method) {
-    case "updateBattery":
-      final int battery = call.arguments['battery'] as int;
-      return "电量已更新为：$battery%";
-    default:
-      throw PlatformException(code: "METHOD_NOT_FOUND", message: "方法未实现");
-  }
-});
+### Data Flow
 ```
-**Convention:** Handle platform calls with type-safe argument casting; throw `PlatformException` for unknown methods.
+View (Stateless Widgets) ←→ ViewModel (Business Logic) ←→ Models (Data)
+     ↓ (Consumer)              ↓ (notifyListeners)         ↓ (copyWith)
+   CarControlPage        CarControlViewModel       CarModel, StatusModel
+```
+
+### Key Directories & Responsibilities
+- **`models/`** - Immutable data classes with `copyWith()`, `fromJson()`, `toJson()`
+  - [CarModel](../flutter_module/lib/models/car_model.dart): Vehicle data (battery, range, lock status)
+  - [StatusModel](../flutter_module/lib/models/status_model.dart): Feature states (climate, seats, security)
+  
+- **`viewmodels/`** - Single [CarControlViewModel](../flutter_module/lib/viewmodels/car_control_viewmodel.dart) managing all business logic
+  - Extends `ChangeNotifier` for reactive updates
+  - Initializes models and sets up platform channel handlers
+  - Methods named after actions: `toggleClimateAuto()`, `updateTargetTemperature()`, `lockCar()`
+  
+- **`views/pages/`** - [CarControlPage](../flutter_module/lib/views/pages/car_control_page.dart) uses `Consumer<CarControlViewModel>` to reactively display state
+  
+- **`views/widgets/`** - 8 reusable stateless widgets (HeaderCard, ClimateCard, SeatCard, etc.) accepting callbacks & model data as parameters
+
+**Key Convention:** All state mutations happen in ViewModel; Views never modify models directly.
+
+## Platform Channel Integration (iOS ↔ Flutter)
+
+**Channel Name:** `com.changan.carcontrol/channel`  
+**Handler Location:** [PlatformChannelService](../flutter_module/lib/services/platform_channel_service.dart)
+
+**Flow:**
+```
+iOS ViewController → invokes "updateBattery" → PlatformChannelService
+  → calls CarControlViewModel._updateBattery()
+  → updates CarModel via copyWith()
+  → notifyListeners() → UI rebuilds
+```
+
+**Setup in iOS:**
+1. [ViewController.swift](../MyiOSApp/SwiftUI10/ViewController.swift): Creates `FlutterEngine` and `FlutterViewController`
+2. [Podfile](../MyiOSApp/Podfile): Loads Flutter pods via `flutter_install_all_ios_pods`
 
 ## Development Workflows
 
-### Building the Flutter Module
+### First-Time Setup
 ```bash
-cd flutter_module
-flutter pub get
-flutter build ios --release  # Builds framework for iOS integration
+cd flutter_module && flutter pub get && flutter build ios --release
+cd ../MyiOSApp && pod install --repo-update
+open SwiftUI10.xcworkspace  # Always .xcworkspace, never .xcodeproj
 ```
 
-### Building the iOS App
-```bash
-cd MyiOSApp
-pod install  # Essential - fetches Flutter pods and integrates module
-open SwiftUI10.xcworkspace  # Always use .xcworkspace, not .xcodeproj
-```
+### Adding Features (3-Step MVVM Pattern)
 
-### Adding Flutter Dependencies
-When adding packages to the Flutter module, you must rebuild iOS pods:
+**Example: Add new "lights" toggle**
+
+1. **Model** - Add field to [StatusModel](../flutter_module/lib/models/status_model.dart):
+   ```dart
+   final bool lightsOn;
+   
+   StatusModel copyWith({bool? lightsOn}) {
+     return StatusModel(..., lightsOn: lightsOn ?? this.lightsOn);
+   }
+   ```
+
+2. **ViewModel** - Add method to [CarControlViewModel](../flutter_module/lib/viewmodels/car_control_viewmodel.dart):
+   ```dart
+   void toggleLights() {
+     _statusModel = _statusModel.copyWith(lightsOn: !_statusModel.lightsOn);
+     notifyListeners();
+   }
+   ```
+
+3. **View** - Use in [CarControlPage](../flutter_module/lib/views/pages/car_control_page.dart) widget callbacks.
+
+### Pod Dependency Management
 ```bash
+# After adding Flutter packages
 cd flutter_module && flutter pub add package_name
 cd ../MyiOSApp && pod install
 ```
 
-## Important Conventions & Gotchas
+## Critical Conventions & Gotchas
 
-1. **Always use `.xcworkspace`** in Xcode, not `.xcodeproj` - pods won't resolve correctly otherwise
-2. **Relative path in Podfile:** Flutter module path is `../flutter_module` from Podfile location
-3. **Method Channel naming:** Use reverse domain format (`com.changan.carcontrol/channel`) for clarity
-4. **Type safety:** Always cast method channel arguments explicitly and throw exceptions for missing methods
-5. **Widget naming:** Private internal widgets use leading underscore (`_WidgetName`); public widgets capitalize normally
-6. **Chinese text:** UI includes Chinese labels (电量 = battery, 充电 = charging) - localization not yet implemented
+| Issue | Solution |
+|-------|----------|
+| Pods won't resolve in Xcode | Always open `.xcworkspace`, not `.xcodeproj` |
+| Platform channel method not recognized | Ensure `case "methodName"` matches iOS invoke exactly; throw `PlatformException` for unknown methods |
+| State not updating in UI | ViewModel method must call `notifyListeners()` after model update |
+| Widget doesn't receive updated data | Ensure widget is wrapped in `Consumer<CarControlViewModel>` |
+| Model field changes not detected | Use `copyWith()` to create new instance; direct field mutation won't trigger UI rebuild |
 
-## File Reference Guide
+## File Reference Quick Guide
 
-| File | Purpose |
-|------|---------|
-| [flutter_module/pubspec.yaml](../flutter_module/pubspec.yaml) | Flutter dependencies & metadata |
-| [flutter_module/lib/main.dart](../flutter_module/lib/main.dart) | Flutter UI & platform channel implementation |
-| [MyiOSApp/SwiftUI10/ViewController.swift](../MyiOSApp/SwiftUI10/ViewController.swift) | iOS entry point; Flutter engine initialization |
-| [MyiOSApp/Podfile](../MyiOSApp/Podfile) | iOS dependency management & Flutter pod integration |
-| [MyiOSApp/SwiftUI10/AppDelegate.swift](../MyiOSApp/SwiftUI10/AppDelegate.swift) | App lifecycle (basic template, minimal setup) |
+| File | When to Edit |
+|------|-------------|
+| [CarControlViewModel](../flutter_module/lib/viewmodels/car_control_viewmodel.dart) | Adding new features, business logic |
+| [CarModel](../flutter_module/lib/models/car_model.dart), [StatusModel](../flutter_module/lib/models/status_model.dart) | New data fields |
+| [CarControlPage](../flutter_module/lib/views/pages/car_control_page.dart) | Changing UI layout, adding widgets |
+| [views/widgets/*.dart](../flutter_module/lib/views/widgets/) | Styling, UI component logic |
+| [PlatformChannelService](../flutter_module/lib/services/platform_channel_service.dart) | New iOS ↔ Flutter methods |
+| [Podfile](../MyiOSApp/Podfile) | Adding native iOS dependencies |
+| [ViewController.swift](../MyiOSApp/SwiftUI10/ViewController.swift) | Flutter engine initialization issues |
 
-## Common Tasks for AI Agents
+## Documentation for Reference
 
-- **Modifying Flutter UI:** Edit [main.dart](../flutter_module/lib/main.dart) widget classes directly
-- **Adding new methods:** Add case to `setMethodCallHandler()` in `ModuleHomePage`
-- **Testing platform integration:** Use method channels from iOS to trigger Flutter state updates
-- **Pod dependency issues:** Run `pod install --repo-update` in MyiOSApp directory
+- [QUICK_START.md](../flutter_module/QUICK_START.md) - Setup & running guide
+- [README_MVVM.md](../flutter_module/README_MVVM.md) - MVVM architecture details
+- [MVVM_ARCHITECTURE.md](../flutter_module/lib/MVVM_ARCHITECTURE.md) - Design decisions

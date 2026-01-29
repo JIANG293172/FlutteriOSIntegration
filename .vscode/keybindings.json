@@ -1,0 +1,8 @@
+// 快捷键配置
+// 使用 Cmd+Shift+J 在文件浏览器中定位当前编辑的文件
+[
+    {
+        "key": "cmd+shift+j",
+        "command": "workbench.files.action.showActiveFileInExplorer"
+    }
+]
