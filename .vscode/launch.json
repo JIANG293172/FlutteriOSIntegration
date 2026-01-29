@@ -17,22 +17,6 @@
             "request": "launch",
             "type": "dart",
             "deviceId": "00008110-0001394A02F9801E"
-        },
-        {
-            "name": "flutter_module (profile mode)",
-            "cwd": "flutter_module",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile",
-            "deviceId": "simulator"
-        },
-        {
-            "name": "flutter_module (release mode)",
-            "cwd": "flutter_module",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release",
-            "deviceId": "simulator"
         }
     ]
 }
