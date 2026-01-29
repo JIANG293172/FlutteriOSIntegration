@@ -27,7 +27,7 @@ class RouterService {
         handlers[route] = handler
         print("RouterService registered handler for route: \(route)")
     }
-5
+
     /// 注册事件处理器
     /// - Parameters:
     ///   - event: 事件名称
@@ -53,12 +53,8 @@ class RouterService {
             "params": params
         ]
 
-        methodChannel.invokeMethod("invokeFlutter", arguments: request) { result, error in
-            if let error = error {
-                completion(nil, error)
-            } else {
-                completion(result, nil)
-            }
+        methodChannel.invokeMethod("invokeFlutter", arguments: request) { result in
+            completion(result, nil)
         }
     }
 
@@ -140,10 +136,8 @@ class RouterService {
             "data": data
         ]
 
-        methodChannel.invokeMethod("onEvent", arguments: eventData) { result, error in
-            if let error = error {
-                print("RouterService: Failed to send event: \(error)")
-            }
+        methodChannel.invokeMethod("onEvent", arguments: eventData) { _ in
+            // 事件发送成功
         }
     }
 }

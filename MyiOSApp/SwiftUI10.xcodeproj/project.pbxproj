@@ -93,9 +93,11 @@
 			buildConfigurationList = 5C8E23772EBAF19F0084E5A6 /* Build configuration list for PBXNativeTarget "SwiftUI10" */;
 			buildPhases = (
 				E84B2B1E6869E737D5B9CA80 /* [CP] Check Pods Manifest.lock */,
+				351AE03051D2A77F0EE3AA99 /* [CP-User] Run Flutter Build flutter_module Script */,
 				5C8E23602EBAF19E0084E5A6 /* Sources */,
 				5C8E23612EBAF19E0084E5A6 /* Frameworks */,
 				5C8E23622EBAF19E0084E5A6 /* Resources */,
+				5EF658F7B3FC0E250C1E04AF /* [CP-User] Embed Flutter Build flutter_module Script */,
 			);
 			buildRules = (
 			);
@@ -154,6 +156,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		351AE03051D2A77F0EE3AA99 /* [CP-User] Run Flutter Build flutter_module Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] Run Flutter Build flutter_module Script";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nset -u\nsource \"${SRCROOT}/../flutter_module/.ios/Flutter/flutter_export_environment.sh\"\nexport VERBOSE_SCRIPT_LOGGING=1 && \"$FLUTTER_ROOT\"/packages/flutter_tools/bin/xcode_backend.sh build";
+		};
+		5EF658F7B3FC0E250C1E04AF /* [CP-User] Embed Flutter Build flutter_module Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] Embed Flutter Build flutter_module Script";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nset -u\nsource \"${SRCROOT}/../flutter_module/.ios/Flutter/flutter_export_environment.sh\"\nexport VERBOSE_SCRIPT_LOGGING=1 && \"$FLUTTER_ROOT\"/packages/flutter_tools/bin/xcode_backend.sh embed_and_thin";
+		};
 		E84B2B1E6869E737D5B9CA80 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
