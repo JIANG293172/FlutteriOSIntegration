@@ -3,6 +3,8 @@ import 'views/pages/module_home_page.dart';
 import 'services/router_service.dart';
 
 void main() {
+  // 确保 WidgetsFlutterBinding 初始化
+  WidgetsFlutterBinding.ensureInitialized();
   // 初始化路由服务
   RouterService.initialize();
   // 注册示例路由处理器
