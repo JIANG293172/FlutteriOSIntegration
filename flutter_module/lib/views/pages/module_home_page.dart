@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_module/views/pages/FlutterExamples.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../viewmodels/car_control_viewmodel.dart';
@@ -50,14 +51,10 @@ class _ModuleHomePageState extends State<ModuleHomePage> {
 
   /// 打开百度官网
   Future<void> _openBaiduWebsite() async {
-    final Uri url = Uri.parse('https://www.baidu.com');
-    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('无法打开百度官网')));
-      }
-    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Example7_TextField()),
+    ).then((result) {});
   }
 
   @override

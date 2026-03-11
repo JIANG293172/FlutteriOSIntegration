@@ -1,0 +1,2267 @@
+Example1_HelloWorld_基础入口
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example1_HelloWorld());
+
+class Example1_HelloWorld extends StatelessWidget {
+  const Example1_HelloWorld({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '示例1：Hello World',
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Hello World')),
+        body: const Center(child: Text('Hello Flutter!')),
+      ),
+    );
+  }
+}
+
+
+Example2_TextWidget_文本样式
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example2_TextWidget());
+
+class Example2_TextWidget extends StatelessWidget {
+  const Example2_TextWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('文本样式演示')),
+        body: const Center(
+          child: Text(
+            'Flutter文本样式\n多行展示',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.underline,
+              decorationColor: Colors.red,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example3_Container_容器组件
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example3_Container());
+
+class Example3_Container extends StatelessWidget {
+  const Example3_Container({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Container容器')),
+        body: Center(
+          child: Container(
+            width: 200,
+            height: 200,
+            margin: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.yellow,
+              border: Border.all(color: Colors.red, width: 3),
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 5)],
+            ),
+            child: const Text('容器内容'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example4_RowColumn_线性布局
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example4_RowColumn());
+
+class Example4_RowColumn extends StatelessWidget {
+  const Example4_RowColumn({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Row/Column布局')),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Text('左'),
+                Text('中'),
+                Text('右'),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Column(
+              children: const [
+                Text('上'),
+                Text('中'),
+                Text('下'),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+Example5_SizedBox_Spacer_间距控制
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example5_SizedBox_Spacer());
+
+class Example5_SizedBox_Spacer extends StatelessWidget {
+  const Example5_SizedBox_Spacer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('间距控制')),
+        body: Row(
+          children: [
+            const Text('文本1'),
+            const SizedBox(width: 30), // 固定间距
+            const Text('文本2'),
+            const Spacer(), // 自适应剩余空间
+            const Text('文本3'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+Example6_Padding_Margin_内边距外边距
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example6_Padding_Margin());
+
+class Example6_Padding_Margin extends StatelessWidget {
+  const Example6_Padding_Margin({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Padding/Margin')),
+        body: Container(
+          margin: const EdgeInsets.all(20), // 外边距
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10), // 内边距
+          color: Colors.lightBlue,
+          child: const Text('内边距演示', style: TextStyle(color: Colors.white)),
+        ),
+      ),
+    );
+  }
+}
+
+Example7_TextField_输入框
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example7_TextField());
+
+class Example7_TextField extends StatefulWidget {
+  const Example7_TextField({super.key});
+
+  @override
+  State<Example7_TextField> createState() => _Example7_TextFieldState();
+}
+
+class _Example7_TextFieldState extends State<Example7_TextField> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('输入框演示')),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              TextField(
+                controller: _controller,
+                decoration: const InputDecoration(
+                  hintText: '请输入内容',
+                  labelText: '用户名',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person),
+                ),
+                maxLength: 20,
+                obscureText: false, // 密码框设为true
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(title: Text('输入内容：${_controller.text}')),
+                ),
+                child: const Text('获取输入'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+Example8_ElevatedButton_按钮
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example8_ElevatedButton());
+
+class Example8_ElevatedButton extends StatelessWidget {
+  const Example8_ElevatedButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('按钮演示')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('普通按钮点击')),
+                ),
+                child: const Text('ElevatedButton'),
+              ),
+              const SizedBox(height: 10),
+              TextButton(
+                onPressed: () {},
+                child: const Text('TextButton'),
+              ),
+              const SizedBox(height: 10),
+              OutlinedButton(
+                onPressed: () {},
+                child: const Text('OutlinedButton'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: null, // 禁用
+                child: const Text('禁用按钮'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example9_Icon_Icons_图标
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example9_Icon_Icons());
+
+class Example9_Icon_Icons extends StatelessWidget {
+  const Example9_Icon_Icons({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('图标演示')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(Icons.home, size: 40, color: Colors.red),
+              SizedBox(height: 10),
+              Icon(Icons.settings, size: 40, color: Colors.blue),
+              SizedBox(height: 10),
+              Icon(Icons.favorite, size: 40, color: Colors.pink),
+              SizedBox(height: 10),
+              Icon(Icons.add_circle, size: 40, color: Colors.green),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example10_Image_图片加载
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example10_Image());
+
+class Example10_Image extends StatelessWidget {
+  const Example10_Image({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('图片加载')),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              // 网络图片
+              Image.network(
+                'https://flutter.dev/images/flutter-logo-sharing.png',
+                width: 100,
+                height: 100,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 10),
+              // 本地图片（需在pubspec.yaml配置assets）
+              Image.asset(
+                'assets/images/flutter.png',
+                width: 100,
+                height: 100,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example11_Checkbox_复选框
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example11_Checkbox());
+
+class Example11_Checkbox extends StatefulWidget {
+  const Example11_Checkbox({super.key});
+
+  @override
+  State<Example11_Checkbox> createState() => _Example11_CheckboxState();
+}
+
+class _Example11_CheckboxState extends State<Example11_Checkbox> {
+  bool _isChecked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('复选框')),
+        body: Center(
+          child: CheckboxListTile(
+            title: const Text('同意协议'),
+            value: _isChecked,
+            onChanged: (value) => setState(() => _isChecked = value!),
+            secondary: const Icon(Icons.check),
+            controlAffinity: ListTileControlAffinity.leading,
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example12_Radio_单选框
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example12_Radio());
+
+class Example12_Radio extends StatefulWidget {
+  const Example12_Radio({super.key});
+
+  @override
+  State<Example12_Radio> createState() => _Example12_RadioState();
+}
+
+class _Example12_RadioState extends State<Example12_Radio> {
+  String _selectedValue = '男';
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('单选框')),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RadioListTile(
+              title: const Text('男'),
+              value: '男',
+              groupValue: _selectedValue,
+              onChanged: (value) => setState(() => _selectedValue = value!),
+            ),
+            RadioListTile(
+              title: const Text('女'),
+              value: '女',
+              groupValue: _selectedValue,
+              onChanged: (value) => setState(() => _selectedValue = value!),
+            ),
+            Text('选中：$_selectedValue'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+Example13_Switch_开关
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example13_Switch());
+
+class Example13_Switch extends StatefulWidget {
+  const Example13_Switch({super.key});
+
+  @override
+  State<Example13_Switch> createState() => _Example13_SwitchState();
+}
+
+class _Example13_SwitchState extends State<Example13_Switch> {
+  bool _isOn = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('开关组件')),
+        body: Center(
+          child: SwitchListTile(
+            title: const Text('开启通知'),
+            value: _isOn,
+            onChanged: (value) => setState(() => _isOn = value),
+            activeColor: Colors.green,
+            secondary: const Icon(Icons.notifications),
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example14_Slider_滑动条
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example14_Slider());
+
+class Example14_Slider extends StatefulWidget {
+  const Example14_Slider({super.key});
+
+  @override
+  State<Example14_Slider> createState() => _Example14_SliderState();
+}
+
+class _Example14_SliderState extends State<Example14_Slider> {
+  double _value = 50;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('滑动条')),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Slider(
+                value: _value,
+                min: 0,
+                max: 100,
+                divisions: 10,
+                label: _value.round().toString(),
+                onChanged: (value) => setState(() => _value = value),
+                activeColor: Colors.orange,
+              ),
+              Text('当前值：${_value.round()}'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example15_AlertDialog_对话框
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example15_AlertDialog());
+
+class Example15_AlertDialog extends StatelessWidget {
+  const Example15_AlertDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('对话框')),
+        body: Center(
+          child: ElevatedButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('提示'),
+                content: const Text('这是一个对话框示例'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('取消'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('确定'),
+                  ),
+                ],
+              ),
+            ),
+            child: const Text('显示对话框'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example16_SnackBar_底部提示
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example16_SnackBar());
+
+class Example16_SnackBar extends StatelessWidget {
+  const Example16_SnackBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('SnackBar')),
+        body: Center(
+          child: ElevatedButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('操作成功！'),
+                  action: SnackBarAction(
+                    label: '撤销',
+                    onPressed: () {},
+                  ),
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            },
+            child: const Text('显示SnackBar'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example17_BottomSheet_底部弹窗
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example17_BottomSheet());
+
+class Example17_BottomSheet extends StatelessWidget {
+  const Example17_BottomSheet({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('BottomSheet')),
+        body: Center(
+          child: ElevatedButton(
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+              ),
+              builder: (context) => SizedBox(
+                height: 200,
+                child: Column(
+                  children: const [
+                    ListTile(title: Text('选项1'), leading: Icon(Icons.edit)),
+                    ListTile(title: Text('选项2'), leading: Icon(Icons.delete)),
+                    ListTile(title: Text('选项3'), leading: Icon(Icons.share)),
+                  ],
+                ),
+              ),
+            ),
+            child: const Text('显示底部弹窗'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example18_ListView_列表
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example18_ListView());
+
+class Example18_ListView extends StatelessWidget {
+  const Example18_ListView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // 模拟列表数据
+    final List<String> items = List.generate(20, (index) => '列表项 ${index + 1}');
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('ListView列表')),
+        body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) => ListTile(
+            title: Text(items[index]),
+            leading: const Icon(Icons.list),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('点击了${items[index]}')),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example19_GridView_网格列表
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example19_GridView());
+
+class Example19_GridView extends StatelessWidget {
+  const Example19_GridView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> items = List.generate(20, (index) => '网格项 ${index + 1}');
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('GridView网格')),
+        body: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, // 列数
+            crossAxisSpacing: 10, // 列间距
+            mainAxisSpacing: 10, // 行间距
+            childAspectRatio: 1.0, // 宽高比
+          ),
+          padding: const EdgeInsets.all(10),
+          itemCount: items.length,
+          itemBuilder: (context, index) => Container(
+            color: Colors.lightBlue.withOpacity(0.5),
+            child: Center(child: Text(items[index])),
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example20_Stack_层叠布局
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example20_Stack());
+
+class Example20_Stack extends StatelessWidget {
+  const Example20_Stack({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Stack层叠布局')),
+        body: Center(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // 底层
+              Container(
+                width: 200,
+                height: 200,
+                color: Colors.blue,
+              ),
+              // 中层
+              Container(
+                width: 150,
+                height: 150,
+                color: Colors.yellow,
+              ),
+              // 顶层
+              const Text(
+                '层叠文本',
+                style: TextStyle(fontSize: 20, color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+              // 定位组件
+              const Positioned(
+                bottom: 10,
+                right: 10,
+                child: Icon(Icons.star, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+【状态管理篇（21-35）】
+Example21_StatefulWidget_基础状态
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example21_StatefulWidget());
+
+class Example21_StatefulWidget extends StatefulWidget {
+  const Example21_StatefulWidget({super.key});
+
+  @override
+  State<Example21_StatefulWidget> createState() => _Example21_StatefulWidgetState();
+}
+
+class _Example21_StatefulWidgetState extends State<Example21_StatefulWidget> {
+  int _count = 0;
+
+  void _increment() {
+    setState(() => _count++);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('StatefulWidget状态')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('点击次数：$_count', style: const TextStyle(fontSize: 20)),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _increment,
+                child: const Text('点击增加'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example22_ValueNotifier_轻量状态管理
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example22_ValueNotifier());
+
+class Example22_ValueNotifier extends StatelessWidget {
+  const Example22_ValueNotifier({super.key});
+
+  // 定义ValueNotifier
+  final ValueNotifier<int> _count = ValueNotifier(0);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('ValueNotifier')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // 监听状态变化
+              ValueListenableBuilder(
+                valueListenable: _count,
+                builder: (context, value, child) => Text(
+                  '点击次数：$value',
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => _count.value++,
+                child: const Text('点击增加'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example23_Provider_状态管理
+dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+// 1. 定义状态模型
+class Counter with ChangeNotifier {
+  int _count = 0;
+  int get count => _count;
+
+  void increment() {
+    _count++;
+    notifyListeners(); // 通知监听者
+  }
+}
+
+void main() => runApp(
+      // 2. 提供状态
+      ChangeNotifierProvider(
+        create: (context) => Counter(),
+        child: const Example23_Provider(),
+      ),
+    );
+
+class Example23_Provider extends StatelessWidget {
+  const Example23_Provider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Provider状态管理')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // 3. 消费状态
+              Consumer<Counter>(
+                builder: (context, counter, child) => Text(
+                  '点击次数：${counter.count}',
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => context.read<Counter>().increment(),
+                child: const Text('点击增加'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example24_GetX_状态管理
+dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+// 1. 定义控制器
+class CounterController extends GetxController {
+  final RxInt count = 0.obs; // 可观察变量
+
+  void increment() => count.value++;
+}
+
+void main() => runApp(const Example24_GetX());
+
+class Example24_GetX extends StatelessWidget {
+  const Example24_GetX({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // 2. 初始化控制器
+    final CounterController controller = Get.put(CounterController());
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('GetX状态管理')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // 3. 监听状态
+              Obx(() => Text(
+                    '点击次数：${controller.count.value}',
+                    style: const TextStyle(fontSize: 20),
+                  )),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: controller.increment,
+                child: const Text('点击增加'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example25_InheritedWidget_自定义状态共享
+dart
+import 'package:flutter/material.dart';
+
+// 1. 定义InheritedWidget
+class CountInheritedWidget extends InheritedWidget {
+  final int count;
+  final Function() increment;
+  final Widget child;
+
+  const CountInheritedWidget({
+    super.key,
+    required this.count,
+    required this.increment,
+    required this.child,
+  }) : super(child: child);
+
+  static CountInheritedWidget of(BuildContext context) {
+    final widget = context.dependOnInheritedWidgetOfExactType<CountInheritedWidget>();
+    assert(widget != null, 'CountInheritedWidget not found');
+    return widget!;
+  }
+
+  @override
+  bool updateShouldNotify(CountInheritedWidget oldWidget) {
+    return count != oldWidget.count;
+  }
+}
+
+void main() => runApp(const Example25_InheritedWidget());
+
+class Example25_InheritedWidget extends StatefulWidget {
+  const Example25_InheritedWidget({super.key});
+
+  @override
+  State<Example25_InheritedWidget> createState() => _Example25_InheritedWidgetState();
+}
+
+class _Example25_InheritedWidgetState extends State<Example25_InheritedWidget> {
+  int _count = 0;
+
+  void _increment() => setState(() => _count++);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: CountInheritedWidget(
+        count: _count,
+        increment: _increment,
+        child: Scaffold(
+          appBar: AppBar(title: const Text('InheritedWidget')),
+          body: const CountDisplay(),
+          floatingActionButton: const IncrementButton(),
+        ),
+      ),
+    );
+  }
+}
+
+// 子组件1：显示计数
+class CountDisplay extends StatelessWidget {
+  const CountDisplay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final widget = CountInheritedWidget.of(context);
+    return Center(
+      child: Text('点击次数：${widget.count}', style: const TextStyle(fontSize: 20)),
+    );
+  }
+}
+
+// 子组件2：触发增加
+class IncrementButton extends StatelessWidget {
+  const IncrementButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final widget = CountInheritedWidget.of(context);
+    return FloatingActionButton(
+      onPressed: widget.increment,
+      child: const Icon(Icons.add),
+    );
+  }
+}
+Example26_SetState_异步更新
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example26_SetState_Async());
+
+class Example26_SetState_Async extends StatefulWidget {
+  const Example26_SetState_Async({super.key});
+
+  @override
+  State<Example26_SetState_Async> createState() => _Example26_SetState_AsyncState();
+}
+
+class _Example26_SetState_AsyncState extends State<Example26_SetState_Async> {
+  String _status = '未开始';
+
+  // 模拟异步操作
+  Future<void> _simulateAsyncTask() async {
+    setState(() => _status = '加载中...');
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() => _status = '加载完成');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('异步更新状态')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(_status, style: const TextStyle(fontSize: 20)),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _simulateAsyncTask,
+                child: const Text('执行异步任务'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example27_Provider_MultiProvider
+dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+// 模型1
+class Counter with ChangeNotifier {
+  int _count = 0;
+  int get count => _count;
+  void increment() { _count++; notifyListeners(); }
+}
+
+// 模型2
+class ThemeModel with ChangeNotifier {
+  Color _color = Colors.blue;
+  Color get color => _color;
+  void changeColor() { _color = _color == Colors.blue ? Colors.red : Colors.blue; notifyListeners(); }
+}
+
+void main() => runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => Counter()),
+          ChangeNotifierProvider(create: (_) => ThemeModel()),
+        ],
+        child: const Example27_MultiProvider(),
+      ),
+    );
+
+class Example27_MultiProvider extends StatelessWidget {
+  const Example27_MultiProvider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('MultiProvider')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Consumer<Counter>(
+                builder: (context, counter, _) => Text(
+                  '计数：${counter.count}',
+                  style: TextStyle(fontSize: 20, color: context.watch<ThemeModel>().color),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => context.read<Counter>().increment(),
+                    child: const Text('增加计数'),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () => context.read<ThemeModel>().changeColor(),
+                    child: const Text('切换颜色'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example28_GetX_路由传参 + 状态
+dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class UserController extends GetxController {
+  final RxString username = ''.obs;
+  void setUsername(String name) => username.value = name;
+}
+
+void main() => runApp(const Example28_GetX_RouteState());
+
+class Example28_GetX_RouteState extends StatelessWidget {
+  const Example28_GetX_RouteState({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      initialRoute: '/',
+      getPages: [
+        GetPage(name: '/', page: () => const HomePage()),
+        GetPage(name: '/detail', page: () => const DetailPage()),
+      ],
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final UserController controller = Get.put(UserController());
+    final TextEditingController _textController = TextEditingController();
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('GetX首页')),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            TextField(
+              controller: _textController,
+              decoration: const InputDecoration(hintText: '输入用户名'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                controller.setUsername(_textController.text);
+                Get.toNamed('/detail');
+              },
+              child: const Text('跳转到详情页'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  const DetailPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final UserController controller = Get.find<UserController>();
+    return Scaffold(
+      appBar: AppBar(title: const Text('GetX详情页')),
+      body: Center(
+        child: Obx(() => Text('用户名：${controller.username.value}', style: const TextStyle(fontSize: 20))),
+      ),
+    );
+  }
+}
+Example29_StreamBuilder_流状态
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example29_StreamBuilder());
+
+class Example29_StreamBuilder extends StatefulWidget {
+  const Example29_StreamBuilder({super.key});
+
+  @override
+  State<Example29_StreamBuilder> createState() => _Example29_StreamBuilderState();
+}
+
+class _Example29_StreamBuilderState extends State<Example29_StreamBuilder> {
+  late Stream<int> _countStream;
+  int _count = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // 创建流，每秒发送一次计数
+    _countStream = Stream.periodic(const Duration(seconds: 1), (index) => index + 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('StreamBuilder')),
+        body: Center(
+          child: StreamBuilder<int>(
+            stream: _countStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Text('加载中...', style: TextStyle(fontSize: 20));
+              } else if (snapshot.hasError) {
+                return Text('错误：${snapshot.error}', style: TextStyle(fontSize: 20, color: Colors.red));
+              } else {
+                return Text('流数据：${snapshot.data}', style: const TextStyle(fontSize: 20));
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example30_FutureBuilder_异步构建
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example30_FutureBuilder());
+
+class Example30_FutureBuilder extends StatelessWidget {
+  const Example30_FutureBuilder({super.key});
+
+  // 模拟网络请求
+  Future<String> _fetchData() async {
+    await Future.delayed(const Duration(seconds: 2));
+    return '模拟接口返回数据';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('FutureBuilder')),
+        body: Center(
+          child: FutureBuilder<String>(
+            future: _fetchData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator(); // 加载中
+              } else if (snapshot.hasError) {
+                return Text('请求失败：${snapshot.error}', style: TextStyle(color: Colors.red));
+              } else {
+                return Text('请求结果：${snapshot.data}', style: const TextStyle(fontSize: 20));
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example31_GetX_持久化存储
+dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+void main() async {
+  await GetStorage.init(); // 初始化
+  runApp(const Example31_GetX_Storage());
+}
+
+class Example31_GetX_Storage extends StatelessWidget {
+  const Example31_GetX_Storage({super.key});
+  final GetStorage _box = GetStorage();
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('GetX持久化存储')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '存储的值：${_box.read('counter') ?? 0}',
+                style: const TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  int count = _box.read('counter') ?? 0;
+                  _box.write('counter', count + 1);
+                  Get.forceAppUpdate(); // 刷新UI
+                },
+                child: const Text('增加并存储'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  _box.remove('counter');
+                  Get.forceAppUpdate();
+                },
+                child: const Text('清空存储'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example32_Provider_Selector 优化
+dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class UserModel with ChangeNotifier {
+  String _name = 'Flutter';
+  int _age = 18;
+
+  String get name => _name;
+  int get age => _age;
+
+  void changeName(String name) { _name = name; notifyListeners(); }
+  void changeAge(int age) { _age = age; notifyListeners(); }
+}
+
+void main() => runApp(
+      ChangeNotifierProvider(
+        create: (_) => UserModel(),
+        child: const Example32_Provider_Selector(),
+      ),
+    );
+
+class Example32_Provider_Selector extends StatelessWidget {
+  const Example32_Provider_Selector({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Provider Selector优化')),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // 只监听name变化
+              Selector<UserModel, String>(
+                selector: (context, model) => model.name,
+                builder: (context, name, _) => Text('姓名：$name', style: const TextStyle(fontSize: 20)),
+              ),
+              const SizedBox(height: 10),
+              // 只监听age变化
+              Selector<UserModel, int>(
+                selector: (context, model) => model.age,
+                builder: (context, age, _) => Text('年龄：$age', style: const TextStyle(fontSize: 20)),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => context.read<UserModel>().changeName('Dart'),
+                child: const Text('修改姓名'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () => context.read<UserModel>().changeAge(20),
+                child: const Text('修改年龄'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example33_Bloc_基础使用
+dart
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+// 事件
+enum CounterEvent { increment, decrement }
+
+// Bloc
+class CounterBloc extends Bloc<CounterEvent, int> {
+  CounterBloc() : super(0) {
+    on<CounterEvent>((event, emit) {
+      switch (event) {
+        case CounterEvent.increment:
+          emit(state + 1);
+          break;
+        case CounterEvent.decrement:
+          emit(state - 1);
+          break;
+      }
+    });
+  }
+}
+
+void main() => runApp(const Example33_Bloc());
+
+class Example33_Bloc extends StatelessWidget {
+  const Example33_Bloc({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CounterBloc(),
+      child: MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(title: const Text('Bloc状态管理')),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BlocBuilder<CounterBloc, int>(
+                  builder: (context, state) => Text(
+                    '计数：$state',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => context.read<CounterBloc>().add(CounterEvent.decrement),
+                      child: const Text('-'),
+                    ),
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: () => context.read<CounterBloc>().add(CounterEvent.increment),
+                      child: const Text('+'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example34_AnimatedBuilder_状态动画
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example34_AnimatedBuilder());
+
+class Example34_AnimatedBuilder extends StatefulWidget {
+  const Example34_AnimatedBuilder({super.key});
+
+  @override
+  State<Example34_AnimatedBuilder> createState() => _Example34_AnimatedBuilderState();
+}
+
+class _Example34_AnimatedBuilderState extends State<Example34_AnimatedBuilder>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+    _animation = Tween<double>(begin: 0, end: 300).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('AnimatedBuilder')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedBuilder(
+                animation: _animation,
+                builder: (context, child) => Container(
+                  width: _animation.value,
+                  height: _animation.value,
+                  color: Colors.blue,
+                  child: child,
+                ),
+                child: const Center(child: Text('动画容器', style: TextStyle(color: Colors.white))),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  if (_controller.status == AnimationStatus.completed) {
+                    _controller.reverse();
+                  } else {
+                    _controller.forward();
+                  }
+                },
+                child: const Text('播放/反向动画'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example35_StatefulBuilder_局部状态
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example35_StatefulBuilder());
+
+class Example35_StatefulBuilder extends StatelessWidget {
+  const Example35_StatefulBuilder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('StatefulBuilder局部状态')),
+        body: Center(
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              int count = 0;
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('局部计数：$count', style: const TextStyle(fontSize: 20)),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    count++),
+                    child: const Text('局部增加'),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+【路由与导航篇（36-45）】
+Example36_MaterialPageRoute_基础路由
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example36_MaterialPageRoute());
+
+class Example36_MaterialPageRoute extends StatelessWidget {
+  const Example36_MaterialPageRoute({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '基础路由',
+      home: const HomePage(),
+    );
+  }
+}
+
+// 首页
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('首页')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const DetailPage()),
+          ),
+          child: const Text('跳转到详情页'),
+        ),
+      ),
+    );
+  }
+}
+
+// 详情页
+class DetailPage extends StatelessWidget {
+  const DetailPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('详情页'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: const Center(child: Text('这是详情页')),
+    );
+  }
+}
+Example37_路由传参
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example37_RouteParams());
+
+class Example37_RouteParams extends StatelessWidget {
+  const Example37_RouteParams({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: const HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('首页-传参')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DetailPage(
+                id: 1001,
+                name: 'Flutter教程',
+              ),
+            ),
+          ),
+          child: const Text('跳转并传参'),
+        ),
+      ),
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  final int id;
+  final String name;
+
+  const DetailPage({super.key, required this.id, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('详情页-接参')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('ID：$id', style: const TextStyle(fontSize: 20)),
+            Text('名称：$name', style: const TextStyle(fontSize: 20)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+Example38_命名路由
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example38_NamedRoute());
+
+class Example38_NamedRoute extends StatelessWidget {
+  const Example38_NamedRoute({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/detail': (context) => const DetailPage(),
+      },
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('命名路由首页')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => Navigator.pushNamed(context, '/detail'),
+          child: const Text('命名路由跳转'),
+        ),
+      ),
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  const DetailPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('命名路由详情页')),
+      body: const Center(child: Text('命名路由详情页')),
+    );
+  }
+}
+Example39_命名路由传参
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example39_NamedRouteParams());
+
+class Example39_Named {
+  const Example39_NamedRouteParams({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      initialRoute: '/',
+      onGenerateRoute: (settings) {
+        if (settings.name == '/detail') {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (context) => DetailPage(id: args['id'], name: args['name']),
+          );
+        }
+        return null;
+      },
+      routes: {
+        '/': (context) => const HomePage(),
+      },
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('命名路由传参')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => Navigator.pushNamed(
+            context,
+            '/detail',
+            arguments: {'id': 1002, 'name': 'Dart教程'},
+          ),
+          child: const Text('命名路由传参跳转'),
+        ),
+      ),
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  final int id;
+  final String.key, required this.id, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('命名路由接参')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('ID：$id', style: const TextStyle(fontSize: 20)),
+            Text('名称：$name', style: const TextStyle(fontSize: 20)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+Example40_返回数据
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example40_ReturnData());
+
+class Example40_ReturnData extends StatelessWidget {
+  const Example40_ReturnData({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: const HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String _result = '未选择';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('返回数据示例')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('选择结果：$_result', style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                // 等待返回数据
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SelectPage()),
+                );
+                if (result != null) {
+                  setState(() => _result = result);
+                }
+              },
+              child: const Text('选择选项'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SelectPage extends StatelessWidget {
+  const SelectPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('选择页面')),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ListTile(
+            title: const Text('选项1'),
+            onTap: () => Navigator.pop(context, '选项1'),
+          ),
+          ListTile(
+            title: const Text('选项2'),
+            onTap: () => Navigator.pop(context, '选项2'),
+          ),
+          ListTile(
+            title: const Text('选项3'),
+            onTap: () => Navigator.pop(context, '选项3'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+Example41_PageView_页面切换
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example41_PageView());
+
+class Example41_PageView extends StatelessWidget {
+  const Example41_PageView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('PageView页面切换')),
+        body: PageView(
+          scrollDirection: Axis.horizontal, // 水平/垂直
+          pageSnapping: true, // 吸顶效果
+          onPageChanged: (index) => print('当前页面：$index'),
+          children: const [
+            Center(child: Text('页面1', style: TextStyle(fontSize: 30))),
+            Center(child: Text('页面2', style: TextStyle(fontSize: 30))),
+            Center(child: Text('页面3', style: TextStyle(fontSize: 30))),
+          ],
+        ),
+      ),
+    );
+  }
+}
+Example42_BottomNavigationBar_底部导航
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example42_BottomNavigationBar());
+
+class Example42_BottomNavigationBar extends StatefulWidget {
+  const Example42_BottomNavigationBar({super.key});
+
+  @override
+  State<Example42_BottomNavigationBar> createState() => _Example42_BottomNavigationBarState();
+}
+
+class _Example42_BottomNavigationBarState extends State<Example42_BottomNavigationBar> {
+  int _currentIndex = 0;
+  final List<Widget> _pages = const [
+    Center(child: Text('首页', style: TextStyle(fontSize: 30))),
+    Center(child: Text('消息', style: TextStyle(fontSize: 30))),
+    Center(child: Text('我的', style: TextStyle(fontSize: 30))),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('底部导航栏')),
+        body: _pages[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) => setState(() => _currentIndex = index),
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: '首页'),
+            BottomNavigationBarItem(icon: Icon(Icons.message), label: '消息'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: '我的'),
+          ],
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey,
+        ),
+      ),
+    );
+  }
+}
+Example43_TabBar_顶部标签
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example43_TabBar());
+
+class Example43_TabBar extends StatelessWidget {
+  const Example43_TabBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 3, // 标签数量
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('顶部TabBar'),
+            bottom: const TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.home), text: '首页'),
+                Tab(icon: Icon(Icons.search), text: '搜索'),
+                Tab(icon: Icon(Icons.settings), text: '设置'),
+              ],
+            ),
+          ),
+          body: const TabBarView(
+            children: [
+              Center(child: Text('首页内容')),
+              Center(child: Text('搜索内容')),
+              Center(child: Text('设置内容')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example44_Drawer_侧边栏
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example44_Drawer());
+
+class Example44_Drawer extends StatelessWidget {
+  const Example44_Drawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('侧边栏Drawer')),
+        drawer: Drawer(
+         : EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(color: Colors.blue),
+                child: Text(
+                  '侧边栏头部',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+              ListTile(
+                title: const Text('选项1'),
+                leading: const Icon(Icons.home),
+                onTap: () => Navigator.pop(context),
+              ),
+              ListTile(
+                title: const Text('选项2'),
+                leading: const Icon(Icons.settings),
+                onTap: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+        ),
+        body: const Center(child: Text('主内容区')),
+      ),
+    );
+  }
+}
+Example45_GetX_路由管理
+dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+void main() => runApp(const Example45_GetX_Route());
+
+class Example45_GetX_Route extends StatelessWidget {
+  const Example45_GetX_Route({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      initialRoute: '/',
+      getPages: [
+        GetPage(name: '/', page: () => const HomePage()),
+        GetPage(name: '/detail', page: () => const DetailPage()),
+      ],
+      defaultTransition: Transition.cupertino, // 转场动画
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('GetX路由首页')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () => Get.toNamed('/detail'),
+              child: const Text('普通跳转'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () => Get.offNamed('/detail'), // 关闭当前页
+              child: const Text('跳转并关闭当前页'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () => Get.offAllNamed('/detail'), // 关闭所有页
+              child: const Text('跳转并关闭所有页'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  const DetailPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('GetX路由详情页')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => Get.back(), // 返回
+          child: const Text('返回首页'),
+        ),
+      ),
+    );
+  }
+}
+【动画篇（46-60）】
+Example46_AnimatedContainer_容器动画
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example46_AnimatedContainer());
+
+class Example46_AnimatedContainer extends StatefulWidget {
+  const Example46_AnimatedContainer({super.key});
+
+  @override
+  State<Example46_AnimatedContainer> createState() => _Example46_AnimatedContainerState();
+}
+
+class _Example46_AnimatedContainerState extends State<Example46_AnimatedContainer> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('AnimatedContainer')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedContainer(
+                duration: const Duration(seconds: 1),
+                width: _isExpanded ? 300 : 100,
+                height: _isExpanded ? 300 : 100,
+                color: _isExpanded ? Colors.red : Colors.blue,
+                curve: Curves.easeInOut,
+                child: const Center(child: Text('容器动画')),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => setState(() => _isExpanded = !_isExpanded),
+                child: const Text('切换动画'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example47_AnimatedOpacity_透明度动画
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example47_AnimatedOpacity());
+
+class Example47_AnimatedOpacity extends StatefulWidget {
+  const Example47_AnimatedOpacity({super.key});
+
+  @override
+  State<Example47_AnimatedOpacity> createState() => _Example47_AnimatedOpacityState();
+}
+
+class _Example47_AnimatedOpacityState extends State<Example47_AnimatedOpacity> {
+  double _opacity = 1.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('AnimatedOpacity')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedOpacity(
+                opacity: _opacity,
+                duration: const Duration(seconds: 1),
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  color: Colors.blue,
+                  child: const Center(child: Text('透明度动画')),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => setState(() => _opacity = _opacity == 1.0 ? 0.1 : 1.0),
+                child: const Text('切换透明度'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example48_AnimatedSize_尺寸动画
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example48_AnimatedSize());
+
+class Example48_AnimatedSize extends StatefulWidget {
+  const Example48_AnimatedSize({super.key});
+
+  @override
+  State<Example48_AnimatedSize> createState() => _Example48_AnimatedSizeState();
+}
+
+class _Example48_AnimatedSizeState extends State<Example48_AnimatedSize>
+    with SingleTickerProviderStateMixin {
+  bool _isLarge = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('AnimatedSize')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedSize(
+                vsync: this,
+                duration: const Duration(seconds: 1),
+                child: Container(
+                  width: _isLarge ? 300 : 100,
+                  height: _isLarge ? 300 : 100,
+                  color: Colors.green,
+                  child: const Center(child: Text('尺寸动画')),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => setState(() => _isLarge = !_isLarge),
+                child: const Text('切换尺寸'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+Example49_AnimatedPositioned_位移动画
+dart
+import 'package:flutter/material.dart';
+
+void main() => runApp(const Example49_AnimatedPositioned());
+
+class

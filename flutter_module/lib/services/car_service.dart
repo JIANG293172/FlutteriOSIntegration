@@ -27,7 +27,10 @@ class CarService {
 
     // 3. 发起请求
     try {
-      var response = await QYNetworkManager.shared.request(request, params: params);
+      var response = await QYNetworkManager.shared.request(
+        request,
+        params: params,
+      );
       if (response.success) {
         print('车辆列表请求成功: ${response.originalData}');
         onSuccess(response.data);
