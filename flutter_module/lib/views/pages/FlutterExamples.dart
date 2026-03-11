@@ -201,3 +201,119 @@ class _Example_TextFieldState extends State<Example7_TextField> {
     );
   }
 }
+
+class Example8_ElevatedButton extends StatelessWidget {
+  const Example8_ElevatedButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('按钮演示')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () => ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('普通按钮点击'))),
+                child: const Text('ElevatedButton'),
+              ),
+              const SizedBox(height: 20),
+              TextButton(onPressed: () {}, child: const Text('text button')),
+              const SizedBox(height: 10),
+              OutlinedButton(
+                onPressed: () {},
+                child: const Text('outlinedbutton'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(onPressed: null, child: const Text('禁用按钮')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example9_Icon_Icons extends StatelessWidget {
+  const Example9_Icon_Icons({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('图标样式')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(Icons.home, size: 40, color: Colors.red),
+              SizedBox(height: 20),
+              Icon(Icons.settings, size: 40, color: Colors.blue),
+              SizedBox(height: 20),
+              Icon(Icons.favorite, size: 40, color: Colors.pink),
+              SizedBox(height: 20),
+              Icon(Icons.add_circle, size: 40, color: Colors.green),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example10_Image extends StatelessWidget {
+  const Example10_Image({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('图片加载')),
+        body: Column(
+          children: [
+            Image.network(
+              'https://flutter.dev/images/flutter-logo-sharing.png',
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(height: 10),
+            Image.asset('assets/images/flutter.png', width: 100, height: 100),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Example11_Checkbox extends StatefulWidget {
+  const Example11_Checkbox({super.key});
+
+  @override
+  State<Example11_Checkbox> createState() => _Example11_CheckboxState();
+}
+
+class _Example11_CheckboxState extends State<Example11_Checkbox> {
+  bool _isChecked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('复选框示例')),
+        body: Center(
+          child: CheckboxListTile(
+            title: const Text('同意协议'),
+            value: _isChecked,
+            onChanged: (value) => setState(() => _isChecked = value!),
+            secondary: const Icon(Icons.check),
+            controlAffinity: ListTileControlAffinity.leading,
+          ),
+        ),
+      ),
+    );
+  }
+}
