@@ -317,3 +317,139 @@ class _Example11_CheckboxState extends State<Example11_Checkbox> {
     );
   }
 }
+
+class Example12_Radio extends StatefulWidget {
+  const Example12_Radio({super.key});
+
+  @override
+  State<Example12_Radio> createState() => _Example12_RadioState();
+}
+
+class _Example12_RadioState extends State<Example12_Radio> {
+  String _selectedValue = '男';
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('单选框')),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RadioListTile(
+              title: const Text('男'),
+              value: '男',
+              groupValue: _selectedValue,
+              onChanged: (value) => setState(() => _selectedValue = value!),
+            ),
+            RadioListTile(
+              title: const Text('女'),
+              value: '女',
+              groupValue: _selectedValue,
+              onChanged: (value) => setState(() => _selectedValue = value!),
+            ),
+            Text('选中 $_selectedValue'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Example13_Switch extends StatefulWidget {
+  const Example13_Switch({super.key});
+
+  @override
+  State<Example13_Switch> createState() => _Example13_SwitchState();
+}
+
+class _Example13_SwitchState extends State<Example13_Switch> {
+  bool _isOn = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('开关示例')),
+        body: Center(
+          child: SwitchListTile(
+            title: const Text('开启通知'),
+            value: _isOn,
+            onChanged: (value) => setState(() => _isOn = value),
+            secondary: const Icon(Icons.notifications),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example14_Slider extends StatefulWidget {
+  const Example14_Slider({super.key});
+
+  @override
+  State<Example14_Slider> createState() => _Example14_SliderState();
+}
+
+class _Example14_SliderState extends State<Example14_Slider> {
+  double _value = 0.5;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('滑动条示例')),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Slider(
+                value: _value,
+                onChanged: (value) => setState(() => _value = value),
+                min: 0,
+                max: 100,
+                divisions: 10,
+                label: '值: ${(_value * 100).round()}%',
+              ),
+              const SizedBox(height: 20),
+              Text('当前值: ${(_value * 100).round()}%'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example15_AlertDialog extends StatelessWidget {
+  const Example15_AlertDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('对话框示例')),
+        body: Center(
+          child: ElevatedButton(
+            onPressed: () => AlertDialog(
+              title: Text('提示'),
+              content: const Text('这是一个提示'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('取消'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('确定'),
+                ),
+              ],
+            ),
+            child: const Text('显示对话框'),
+          ),
+        ),
+      ),
+    );
+  }
+}

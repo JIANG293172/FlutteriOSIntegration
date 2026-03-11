@@ -475,6 +475,8 @@ class _Example13_SwitchState extends State<Example13_Switch> {
     );
   }
 }
+
+
 Example14_Slider_滑动条
 dart
 import 'package:flutter/material.dart';
@@ -518,6 +520,8 @@ class _Example14_SliderState extends State<Example14_Slider> {
     );
   }
 }
+
+
 Example15_AlertDialog_对话框
 dart
 import 'package:flutter/material.dart';
@@ -558,6 +562,8 @@ class Example15_AlertDialog extends StatelessWidget {
     );
   }
 }
+
+
 Example16_SnackBar_底部提示
 dart
 import 'package:flutter/material.dart';
