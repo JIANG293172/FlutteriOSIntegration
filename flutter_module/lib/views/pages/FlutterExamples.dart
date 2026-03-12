@@ -95,10 +95,7 @@ class Example4_RowColumn extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: .center,
-              children: const [Text('左边'), Text('中间'), Text('右边')],
-            ),
+            Row(mainAxisAlignment: .center, children: const [Text('左边'), Text('中间'), Text('右边')]),
             const SizedBox(height: 20),
             Column(children: [Text('上'), Text('中'), Text('下')]),
           ],
@@ -215,18 +212,13 @@ class Example8_ElevatedButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () => ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('普通按钮点击'))),
+                onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('普通按钮点击'))),
                 child: const Text('ElevatedButton'),
               ),
               const SizedBox(height: 20),
               TextButton(onPressed: () {}, child: const Text('text button')),
               const SizedBox(height: 10),
-              OutlinedButton(
-                onPressed: () {},
-                child: const Text('outlinedbutton'),
-              ),
+              OutlinedButton(onPressed: () {}, child: const Text('outlinedbutton')),
               const SizedBox(height: 10),
               ElevatedButton(onPressed: null, child: const Text('禁用按钮')),
             ],
@@ -432,24 +424,93 @@ class Example15_AlertDialog extends StatelessWidget {
         appBar: AppBar(title: const Text('对话框示例')),
         body: Center(
           child: ElevatedButton(
-            onPressed: () => AlertDialog(
-              title: Text('提示'),
-              content: const Text('这是一个提示'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('取消'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('确定'),
-                ),
-              ],
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('提示'),
+                  content: const Text('这是一个提示'),
+                  actions: [
+                    TextButton(onPressed: () => Navigator.pop(context), child: const Text('取消')),
+                    TextButton(onPressed: () => Navigator.pop(context), child: const Text('确定')),
+                  ],
+                );
+              },
             ),
             child: const Text('显示对话框'),
           ),
         ),
       ),
     );
+  }
+}
+
+class Example16_SnackBar extends StatelessWidget {
+  const Example16_SnackBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('snackBar')),
+      body: Center(
+        child: Builder(
+          builder: (ctx) => ElevatedButton(
+            onPressed: () {
+              ScaffoldMessenger.of(ctx).showSnackBar(
+                SnackBar(
+                  content: const Text('操作成功'),
+                  action: SnackBarAction(label: '撤销', onPressed: () {}),
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            },
+            child: const Text('显示 snackBar'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example17_BottomSheet extends StatelessWidget {
+  const Example17_BottomSheet({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('bottom sheet')),
+        body: Center(
+          child: ElevatedButton(
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+
+              builder: (context) => SizedBox(
+                height: 200,
+                child: Column(
+                  children: [
+                    ListTile(title: Text('选项1'), leading: Icon(Icons.edit)),
+                    ListTile(title: Text('选项2'), leading: Icon(Icons.delete)),
+                    ListTile(title: Text('选项3'), leading: Icon(Icons.share)),
+                  ],
+                ),
+              ),
+            ),
+            child: const Text('显示底部弹窗'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example18_ListView extends StatelessWidget {
+  const Example18_ListView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material();
   }
 }

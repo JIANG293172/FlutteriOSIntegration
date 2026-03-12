@@ -1,3 +1,24 @@
+
+{
+    "explorer.confirmDelete": false,
+    "git.openRepositoryInParentFolders": "always",
+    "chat.viewSessions.enabled": false,
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [
+            80
+        ],
+        "editor.selectionHighlight": false,
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "off"
+    },
+    "dart.lineLength": 120,
+    "dart.previewLsp": true,
+    "editor.formatOnSave": true
+}
+
+
 Example1_HelloWorld_基础入口
 dart
 import 'package:flutter/material.dart';
@@ -600,6 +621,9 @@ class Example16_SnackBar extends StatelessWidget {
     );
   }
 }
+
+
+
 Example17_BottomSheet_底部弹窗
 dart
 import 'package:flutter/material.dart';
