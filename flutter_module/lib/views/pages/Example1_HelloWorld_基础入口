@@ -1268,6 +1268,9 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
+
+
+
 Example29_StreamBuilder_流状态
 dart
 import 'package:flutter/material.dart';
@@ -1315,6 +1318,8 @@ class _Example29_StreamBuilderState extends State<Example29_StreamBuilder> {
     );
   }
 }
+
+
 Example30_FutureBuilder_异步构建
 dart
 import 'package:flutter/material.dart';
@@ -1353,6 +1358,8 @@ class Example30_FutureBuilder extends StatelessWidget {
     );
   }
 }
+
+
 Example31_GetX_持久化存储
 dart
 import 'package:flutter/material.dart';

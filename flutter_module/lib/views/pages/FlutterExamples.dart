@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:get_storage/get_storage.dart';
 
 class FlutterExamplePage extends StatelessWidget {
   const FlutterExamplePage({super.key});
@@ -974,6 +975,50 @@ class Example30_FutureBuilder extends StatelessWidget {
                 return Text('请求结果${snapshot.data}', style: const TextStyle(fontSize: 20));
               }
             },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example31_GetX_Storage extends StatefulWidget {
+  const Example31_GetX_Storage({super.key});
+
+  @override
+  State<Example31_GetX_Storage> createState() => _Example31_GetX_Storage();
+}
+
+class _Example31_GetX_Storage extends State<Example31_GetX_Storage> {
+  final GetStorage _box = GetStorage();
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('GetStorage示例')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('存储值: ${_box.read('counter') ?? 0}', style: const TextStyle(fontSize: 20)),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  int count = _box.read('counter') ?? 0;
+                  _box.write('counter', count + 1);
+                },
+                child: const Text('增加存储值'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  _box.remove('counter');
+                  Get.forceAppUpdate();
+                },
+                child: const Text('清空存储'),
+              ),
+            ],
           ),
         ),
       ),
