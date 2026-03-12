@@ -926,40 +926,46 @@ class Example27_MutiProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('多Provider示例')),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Consumer<Example27_Counter>(
-                builder: (context, counter, _) => Text(
-                  '计数 ${counter.count}',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: context.watch<Example27_ThemeModel>().color,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Example27_Counter()),
+        ChangeNotifierProvider(create: (_) => Example27_ThemeModel()),
+      ],
+      child: MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(title: const Text('多Provider示例')),
+          body: Builder(
+            builder: (innerContext) => Center(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: () =>
-                        context.read<Example27_Counter>().increment(),
-                    child: const Text('增加'),
+                  Consumer2<Example27_Counter, Example27_ThemeModel>(
+                    builder: (context, counter, theme, _) => Text(
+                      '计数 ${counter.count}',
+                      style: TextStyle(fontSize: 20, color: theme.color),
+                    ),
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () =>
-                        context.read<Example27_ThemeModel>().changeColor(),
-                    child: const Text('切换颜色'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () =>
+                            innerContext.read<Example27_Counter>().increment(),
+                        child: const Text('增加'),
+                      ),
+                      const SizedBox(width: 20),
+                      ElevatedButton(
+                        onPressed: () => innerContext
+                            .read<Example27_ThemeModel>()
+                            .changeColor(),
+                        child: const Text('切换颜色'),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
