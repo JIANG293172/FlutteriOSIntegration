@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class FlutterExamplePage extends StatelessWidget {
   const FlutterExamplePage({super.key});
@@ -614,6 +616,113 @@ class _Example21_StatefullWidgetState extends State<Example21_StatefullWidget> {
               Text('点击次数 $_count', style: const TextStyle(fontSize: 20)),
               const SizedBox(height: 20),
               ElevatedButton(onPressed: _increment, child: const Text('点击增加')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example22_ValueNotifier extends StatefulWidget {
+  const Example22_ValueNotifier({super.key});
+
+  @override
+  State<Example22_ValueNotifier> createState() => _Example22_ValueNotifierState();
+}
+
+class _Example22_ValueNotifierState extends State<Example22_ValueNotifier> {
+  final ValueNotifier<int> _count = ValueNotifier(0);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('ValueNotifier示例')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ValueListenableBuilder<int>(
+                valueListenable: _count,
+                builder: (context, value, child) => Text('点击次数 $value', style: const TextStyle(fontSize: 20)),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(onPressed: () => _count.value++, child: const Text('点击增加')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Counter extends ChangeNotifier {
+  int _count = 0;
+
+  int get count => _count;
+
+  void increment() {
+    _count++;
+    notifyListeners(); // 必须调用，通知 UI 更新
+  }
+}
+
+class Example23_Provider extends StatelessWidget {
+  const Example23_Provider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => Counter(),
+      child: MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(title: const Text('Provider状态管理示例')),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Consumer<Counter>(
+                  builder: (context, counter, child) =>
+                      Text('点击次数 ${counter.count}', style: const TextStyle(fontSize: 20)),
+                ),
+                const SizedBox(height: 20),
+                Consumer<Counter>(
+                  builder: (context, counter, child) =>
+                      ElevatedButton(onPressed: counter.increment, child: const Text('点击增加')),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CounterController extends GetxController {
+  final RxInt count = 0.obs;
+  void increment() => count.value++;
+}
+
+class Example24_GetX extends StatelessWidget {
+  const Example24_GetX({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final CounterController controller = Get.put(CounterController());
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('GetX管理')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Obx(() => Text('点击次数: ${controller.count.value}', style: const TextStyle(fontSize: 20))),
+
+              const SizedBox(height: 20),
+              ElevatedButton(onPressed: controller.increment, child: const Text('点击增加')),
             ],
           ),
         ),
