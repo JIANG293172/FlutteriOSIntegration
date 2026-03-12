@@ -97,7 +97,10 @@ class Example4_RowColumn extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(mainAxisAlignment: .center, children: const [Text('左边'), Text('中间'), Text('右边')]),
+            Row(
+              mainAxisAlignment: .center,
+              children: const [Text('左边'), Text('中间'), Text('右边')],
+            ),
             const SizedBox(height: 20),
             Column(children: [Text('上'), Text('中'), Text('下')]),
           ],
@@ -214,13 +217,18 @@ class Example8_ElevatedButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('普通按钮点击'))),
+                onPressed: () => ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('普通按钮点击'))),
                 child: const Text('ElevatedButton'),
               ),
               const SizedBox(height: 20),
               TextButton(onPressed: () {}, child: const Text('text button')),
               const SizedBox(height: 10),
-              OutlinedButton(onPressed: () {}, child: const Text('outlinedbutton')),
+              OutlinedButton(
+                onPressed: () {},
+                child: const Text('outlinedbutton'),
+              ),
               const SizedBox(height: 10),
               ElevatedButton(onPressed: null, child: const Text('禁用按钮')),
             ],
@@ -433,8 +441,14 @@ class Example15_AlertDialog extends StatelessWidget {
                   title: const Text('提示'),
                   content: const Text('这是一个提示'),
                   actions: [
-                    TextButton(onPressed: () => Navigator.pop(context), child: const Text('取消')),
-                    TextButton(onPressed: () => Navigator.pop(context), child: const Text('确定')),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('取消'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('确定'),
+                    ),
                   ],
                 );
               },
@@ -487,7 +501,9 @@ class Example17_BottomSheet extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () => showModalBottomSheet(
               context: context,
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+              ),
 
               builder: (context) => SizedBox(
                 height: 200,
@@ -524,7 +540,9 @@ class Example18_ListView extends StatelessWidget {
             title: Text(items[index]),
             leading: const Icon(Icons.list),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('点击了 ${items[index]}'))),
+            onTap: () => ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('点击了 ${items[index]}'))),
           ),
         ),
       ),
@@ -579,9 +597,17 @@ class Example20_Stack extends StatelessWidget {
               Container(width: 100, height: 100, color: Colors.blue),
               const Text(
                 '叠层文本',
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const Positioned(bottom: 10, right: 10, child: Icon(Icons.star, size: 30, color: Colors.yellow)),
+              const Positioned(
+                bottom: 10,
+                right: 10,
+                child: Icon(Icons.star, size: 30, color: Colors.yellow),
+              ),
             ],
           ),
         ),
@@ -594,7 +620,8 @@ class Example21_StatefullWidget extends StatefulWidget {
   const Example21_StatefullWidget({super.key});
 
   @override
-  State<Example21_StatefullWidget> createState() => _Example21_StatefullWidgetState();
+  State<Example21_StatefullWidget> createState() =>
+      _Example21_StatefullWidgetState();
 }
 
 class _Example21_StatefullWidgetState extends State<Example21_StatefullWidget> {
@@ -628,7 +655,8 @@ class Example22_ValueNotifier extends StatefulWidget {
   const Example22_ValueNotifier({super.key});
 
   @override
-  State<Example22_ValueNotifier> createState() => _Example22_ValueNotifierState();
+  State<Example22_ValueNotifier> createState() =>
+      _Example22_ValueNotifierState();
 }
 
 class _Example22_ValueNotifierState extends State<Example22_ValueNotifier> {
@@ -645,10 +673,14 @@ class _Example22_ValueNotifierState extends State<Example22_ValueNotifier> {
             children: [
               ValueListenableBuilder<int>(
                 valueListenable: _count,
-                builder: (context, value, child) => Text('点击次数 $value', style: const TextStyle(fontSize: 20)),
+                builder: (context, value, child) =>
+                    Text('点击次数 $value', style: const TextStyle(fontSize: 20)),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(onPressed: () => _count.value++, child: const Text('点击增加')),
+              ElevatedButton(
+                onPressed: () => _count.value++,
+                child: const Text('点击增加'),
+              ),
             ],
           ),
         ),
@@ -683,13 +715,17 @@ class Example23_Provider extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Consumer<Counter>(
-                  builder: (context, counter, child) =>
-                      Text('点击次数 ${counter.count}', style: const TextStyle(fontSize: 20)),
+                  builder: (context, counter, child) => Text(
+                    '点击次数 ${counter.count}',
+                    style: const TextStyle(fontSize: 20),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Consumer<Counter>(
-                  builder: (context, counter, child) =>
-                      ElevatedButton(onPressed: counter.increment, child: const Text('点击增加')),
+                  builder: (context, counter, child) => ElevatedButton(
+                    onPressed: counter.increment,
+                    child: const Text('点击增加'),
+                  ),
                 ),
               ],
             ),
@@ -719,10 +755,18 @@ class Example24_GetX extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Obx(() => Text('点击次数: ${controller.count.value}', style: const TextStyle(fontSize: 20))),
+              Obx(
+                () => Text(
+                  '点击次数: ${controller.count.value}',
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
 
               const SizedBox(height: 20),
-              ElevatedButton(onPressed: controller.increment, child: const Text('点击增加')),
+              ElevatedButton(
+                onPressed: controller.increment,
+                child: const Text('点击增加'),
+              ),
             ],
           ),
         ),
@@ -736,11 +780,16 @@ class CountInhritedWidget extends InheritedWidget {
   final Function() increment;
   final Widget child;
 
-  const CountInhritedWidget({super.key, required this.count, required this.increment, required this.child})
-    : super(child: child);
+  const CountInhritedWidget({
+    super.key,
+    required this.count,
+    required this.increment,
+    required this.child,
+  }) : super(child: child);
 
   static CountInhritedWidget? of(BuildContext context) {
-    final widget = context.dependOnInheritedWidgetOfExactType<CountInhritedWidget>();
+    final widget = context
+        .dependOnInheritedWidgetOfExactType<CountInhritedWidget>();
     assert(widget != null, 'CountInhritedWidget not found in context');
     return widget;
   }
@@ -755,7 +804,8 @@ class Example25_InheritedWidget extends StatefulWidget {
   const Example25_InheritedWidget({super.key});
 
   @override
-  State<Example25_InheritedWidget> createState() => _Example25_InheritedWidget();
+  State<Example25_InheritedWidget> createState() =>
+      _Example25_InheritedWidget();
 }
 
 class _Example25_InheritedWidget extends State<Example25_InheritedWidget> {
@@ -787,7 +837,10 @@ class CountDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widget = CountInhritedWidget.of(context);
-    return Text('点击次数: ${widget?.count ?? 0}', style: const TextStyle(fontSize: 20));
+    return Text(
+      '点击次数: ${widget?.count ?? 0}',
+      style: const TextStyle(fontSize: 20),
+    );
   }
 }
 
@@ -797,6 +850,119 @@ class IncrementButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widget = CountInhritedWidget.of(context);
-    return FloatingActionButton(onPressed: widget?.increment, child: const Icon(Icons.add));
+    return FloatingActionButton(
+      onPressed: widget?.increment,
+      child: const Icon(Icons.add),
+    );
+  }
+}
+
+class Example26_SetState_Async extends StatefulWidget {
+  const Example26_SetState_Async({super.key});
+
+  @override
+  State<Example26_SetState_Async> createState() =>
+      _Example26_SetState_AsyncState();
+}
+
+class _Example26_SetState_AsyncState extends State<Example26_SetState_Async> {
+  String _status = '未开始';
+
+  Future<void> _simulateAsyncOperation() async {
+    setState(() {
+      _status = '加载中...';
+    });
+
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() {
+      _status = '加载完成';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('异步更新状态示例')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(_status, style: const TextStyle(fontSize: 20)),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _simulateAsyncOperation,
+                child: const Text('模拟异步操作'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example27_Counter with ChangeNotifier {
+  int _count = 0;
+  int get count => _count;
+  void increment() {
+    _count++;
+    notifyListeners();
+  }
+}
+
+class Example27_ThemeModel with ChangeNotifier {
+  Color _color = Colors.white;
+  Color get color => _color;
+
+  void changeColor() {
+    _color = _color == Colors.blue ? Colors.red : Colors.blue;
+    notifyListeners();
+  }
+}
+
+class Example27_MutiProvider extends StatelessWidget {
+  const Example27_MutiProvider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('多Provider示例')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Consumer<Example27_Counter>(
+                builder: (context, counter, _) => Text(
+                  '计数 ${counter.count}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: context.watch<Example27_ThemeModel>().color,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () =>
+                        context.read<Example27_Counter>().increment(),
+                    child: const Text('增加'),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () =>
+                        context.read<Example27_ThemeModel>().changeColor(),
+                    child: const Text('切换颜色'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

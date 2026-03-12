@@ -1121,6 +1121,8 @@ class _Example26_SetState_AsyncState extends State<Example26_SetState_Async> {
     );
   }
 }
+
+
 Example27_Provider_MultiProvider
 dart
 import 'package:flutter/material.dart';
@@ -1190,6 +1192,8 @@ class Example27_MultiProvider extends StatelessWidget {
     );
   }
 }
+
+
 Example28_GetX_路由传参 + 状态
 dart
 import 'package:flutter/material.dart';
