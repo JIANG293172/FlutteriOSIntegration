@@ -972,3 +972,51 @@ class Example27_MutiProvider extends StatelessWidget {
     );
   }
 }
+
+class Example29_StreamBuilder extends StatefulWidget {
+  const Example29_StreamBuilder({super.key});
+
+  @override
+  State<Example29_StreamBuilder> createState() =>
+      _Example29_StreamBuilderState();
+}
+
+class _Example29_StreamBuilderState extends State<Example29_StreamBuilder> {
+  late Stream<int> _countStream;
+  int _count = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _countStream = Stream.periodic(const Duration(seconds: 1), (i) => i);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('BuilderState')),
+        body: Center(
+          child: StreamBuilder<int>(
+            stream: _countStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Text('加载中...', style: TextStyle(fontSize: 20));
+              } else if (snapshot.hasError) {
+                return Text(
+                  '错误: ${snapshot.error}',
+                  style: const TextStyle(fontSize: 20, color: Colors.red),
+                );
+              } else {
+                return Text(
+                  '数据流: ${snapshot.data}',
+                  style: const TextStyle(fontSize: 20),
+                );
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
