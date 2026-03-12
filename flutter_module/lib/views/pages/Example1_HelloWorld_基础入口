@@ -1,24 +1,3 @@
-
-{
-    "explorer.confirmDelete": false,
-    "git.openRepositoryInParentFolders": "always",
-    "chat.viewSessions.enabled": false,
-    "[dart]": {
-        "editor.formatOnSave": true,
-        "editor.formatOnType": true,
-        "editor.rulers": [
-            80
-        ],
-        "editor.selectionHighlight": false,
-        "editor.tabCompletion": "onlySnippets",
-        "editor.wordBasedSuggestions": "off"
-    },
-    "dart.lineLength": 120,
-    "dart.previewLsp": true,
-    "editor.formatOnSave": true
-}
-
-
 Example1_HelloWorld_基础入口
 dart
 import 'package:flutter/material.dart';
@@ -622,6 +601,34 @@ class Example16_SnackBar extends StatelessWidget {
   }
 }
 
+class Example16_SnackBar extends StatelessWidget {
+  const Example16_SnackBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('snackBar')),
+      body: Center(
+        child: Builder(
+          builder: (ctx) => ElevatedButton(
+            onPressed: () {
+              ScaffoldMessenger.of(ctx).showSnackBar(
+                SnackBar(
+                  content: const Text('操作成功'),
+                  action: SnackBarAction(label: '撤销', onPressed: () {}),
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            },
+            child: const Text('显示 snackBar'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 
 
 Example17_BottomSheet_底部弹窗
@@ -663,6 +670,8 @@ class Example17_BottomSheet extends StatelessWidget {
     );
   }
 }
+
+
 Example18_ListView_列表
 dart
 import 'package:flutter/material.dart';
@@ -695,6 +704,8 @@ class Example18_ListView extends StatelessWidget {
     );
   }
 }
+
+
 Example19_GridView_网格列表
 dart
 import 'package:flutter/material.dart';
@@ -729,6 +740,8 @@ class Example19_GridView extends StatelessWidget {
     );
   }
 }
+
+
 Example20_Stack_层叠布局
 dart
 import 'package:flutter/material.dart';
@@ -777,6 +790,8 @@ class Example20_Stack extends StatelessWidget {
     );
   }
 }
+
+
 【状态管理篇（21-35）】
 Example21_StatefulWidget_基础状态
 dart
@@ -820,6 +835,8 @@ class _Example21_StatefulWidgetState extends State<Example21_StatefulWidget> {
     );
   }
 }
+
+
 Example22_ValueNotifier_轻量状态管理
 dart
 import 'package:flutter/material.dart';

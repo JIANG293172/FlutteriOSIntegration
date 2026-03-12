@@ -511,6 +511,113 @@ class Example18_ListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material();
+    final List<String> items = List.generate(20, (index) => '列表项 ${index + 1}');
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('ListView列表视图')),
+        body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) => ListTile(
+            title: Text(items[index]),
+            leading: const Icon(Icons.list),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('点击了 ${items[index]}'))),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example19_GridView extends StatelessWidget {
+  const Example19_GridView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> items = List.generate(20, (index) => '网格项 ${index + 1}');
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('GridView网格视图')),
+
+        body: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            childAspectRatio: 1.0,
+            mainAxisSpacing: 10,
+          ),
+          padding: const EdgeInsets.all(10),
+          itemCount: items.length,
+          itemBuilder: (context, index) => Card(
+            margin: const EdgeInsets.all(10),
+            child: Center(child: Text(items[index])),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example20_Stack extends StatelessWidget {
+  const Example20_Stack({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Stack层叠布局')),
+        body: Center(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(width: 200, height: 200, color: Colors.red),
+              Container(width: 150, height: 150, color: Colors.green),
+              Container(width: 100, height: 100, color: Colors.blue),
+              const Text(
+                '叠层文本',
+                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const Positioned(bottom: 10, right: 10, child: Icon(Icons.star, size: 30, color: Colors.yellow)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example21_StatefullWidget extends StatefulWidget {
+  const Example21_StatefullWidget({super.key});
+
+  @override
+  State<Example21_StatefullWidget> createState() => _Example21_StatefullWidgetState();
+}
+
+class _Example21_StatefullWidgetState extends State<Example21_StatefullWidget> {
+  int _count = 0;
+
+  void _increment() {
+    setState(() => _count++);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('StatefulWidget示例')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('点击次数 $_count', style: const TextStyle(fontSize: 20)),
+              const SizedBox(height: 20),
+              ElevatedButton(onPressed: _increment, child: const Text('点击增加')),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
