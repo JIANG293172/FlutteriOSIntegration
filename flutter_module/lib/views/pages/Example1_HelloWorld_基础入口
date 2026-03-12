@@ -878,6 +878,8 @@ class Example22_ValueNotifier extends StatelessWidget {
     );
   }
 }
+
+
 Example23_Provider_状态管理
 dart
 import 'package:flutter/material.dart';
@@ -933,6 +935,9 @@ class Example23_Provider extends StatelessWidget {
     );
   }
 }
+
+
+
 Example24_GetX_状态管理
 dart
 import 'package:flutter/material.dart';
@@ -979,6 +984,8 @@ class Example24_GetX extends StatelessWidget {
     );
   }
 }
+
+
 Example25_InheritedWidget_自定义状态共享
 dart
 import 'package:flutter/material.dart';
@@ -1064,6 +1071,11 @@ class IncrementButton extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
 Example26_SetState_异步更新
 dart
 import 'package:flutter/material.dart';

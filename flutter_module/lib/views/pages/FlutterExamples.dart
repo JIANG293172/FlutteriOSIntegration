@@ -730,3 +730,73 @@ class Example24_GetX extends StatelessWidget {
     );
   }
 }
+
+class CountInhritedWidget extends InheritedWidget {
+  final int count;
+  final Function() increment;
+  final Widget child;
+
+  const CountInhritedWidget({super.key, required this.count, required this.increment, required this.child})
+    : super(child: child);
+
+  static CountInhritedWidget? of(BuildContext context) {
+    final widget = context.dependOnInheritedWidgetOfExactType<CountInhritedWidget>();
+    assert(widget != null, 'CountInhritedWidget not found in context');
+    return widget;
+  }
+
+  @override
+  bool updateShouldNotify(CountInhritedWidget oldWidget) {
+    return count != oldWidget.count;
+  }
+}
+
+class Example25_InheritedWidget extends StatefulWidget {
+  const Example25_InheritedWidget({super.key});
+
+  @override
+  State<Example25_InheritedWidget> createState() => _Example25_InheritedWidget();
+}
+
+class _Example25_InheritedWidget extends State<Example25_InheritedWidget> {
+  int _count = 0;
+
+  void _increment() {
+    setState(() => _count++);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: CountInhritedWidget(
+        count: _count,
+        increment: _increment,
+        child: Scaffold(
+          appBar: AppBar(title: const Text('InheritedWidget示例')),
+          body: const CountDisplay(),
+          floatingActionButton: const IncrementButton(),
+        ),
+      ),
+    );
+  }
+}
+
+class CountDisplay extends StatelessWidget {
+  const CountDisplay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final widget = CountInhritedWidget.of(context);
+    return Text('点击次数: ${widget?.count ?? 0}', style: const TextStyle(fontSize: 20));
+  }
+}
+
+class IncrementButton extends StatelessWidget {
+  const IncrementButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final widget = CountInhritedWidget.of(context);
+    return FloatingActionButton(onPressed: widget?.increment, child: const Icon(Icons.add));
+  }
+}
