@@ -1714,6 +1714,8 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
+
+
 Example37_路由传参
 dart
 import 'package:flutter/material.dart';
@@ -1778,6 +1780,9 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
+
+
+
 Example38_命名路由
 dart
 import 'package:flutter/material.dart';
@@ -1827,6 +1832,9 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
+
+
+
 Example39_命名路由传参
 dart
 import 'package:flutter/material.dart';

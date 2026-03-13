@@ -1454,3 +1454,129 @@ class Example37_DetailPage extends StatelessWidget {
     );
   }
 }
+
+class Example38_NamedRoute extends StatelessWidget {
+  const Example38_NamedRoute({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const Example38_HomePage(),
+        '/detail': (context) => const Example37_DetailPage(name: '张三', age: 25),
+      },
+    );
+  }
+}
+
+class Example38_HomePage extends StatelessWidget {
+  const Example38_HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Example38_HomePage')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => Navigator.pushNamed(context, '/detail'),
+          child: const Text('跳转详情页'),
+        ),
+      ),
+    );
+  }
+}
+
+class Example38_DetailPage extends StatelessWidget {
+  final String name;
+  final int age;
+
+  const Example38_DetailPage({
+    super.key,
+    required this.name,
+    required this.age,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Example37_DetailPage')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('姓名: $name', style: const TextStyle(fontSize: 20)),
+            Text('年龄: $age', style: const TextStyle(fontSize: 20)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Example39_NamedRouterParams extends StatelessWidget {
+  const Example39_NamedRouterParams({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return MaterialApp(
+      initialRoute: '/',
+      onGenerateRoute: (settings) {
+        if (settings.name == '/detail') {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (context) =>
+                Example39_DetailPage(id: args['id'], name: args['name']),
+          );
+        }
+        return null;
+      },
+      routes: {'/': (context) => const Example39_HomePage()},
+    );
+  }
+}
+
+class Example39_HomePage extends StatelessWidget {
+  const Example39_HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Example39_HomePage')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => Navigator.pushNamed(
+            context,
+            '/detail',
+            arguments: {'id': 1, 'name': '张三'},
+          ),
+          child: const Text('跳转详情页'),
+        ),
+      ),
+    );
+  }
+}
+
+class Example39_DetailPage extends StatelessWidget {
+  final int id;
+  final String name;
+
+  const Example39_DetailPage({super.key, required this.id, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('命令路由接参')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('ID: $id', style: const TextStyle(fontSize: 20)),
+            Text('姓名: $name', style: const TextStyle(fontSize: 20)),
+          ],
+        ),
+      ),
+    );
+  }
+}
