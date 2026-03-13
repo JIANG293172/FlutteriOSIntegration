@@ -1580,3 +1580,82 @@ class Example39_DetailPage extends StatelessWidget {
     );
   }
 }
+
+class Example40_ReturnData extends StatelessWidget {
+  const Example40_ReturnData({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(home: const Example40_HomePage());
+  }
+}
+
+class Example40_HomePage extends StatefulWidget {
+  const Example40_HomePage({super.key});
+  @override
+  State<Example40_HomePage> createState() => _Example40_HomePage();
+}
+
+class _Example40_HomePage extends State<Example40_HomePage> {
+  String _result = '未选择';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('返回数据实例')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('选择结构 $_result', style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Example40_SelectPage(),
+                  ),
+                );
+                if (result == null) {
+                  return;
+                }
+                setState(() {
+                  _result = result ?? '未选择';
+                });
+              },
+              child: const Text('选择选项'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Example40_SelectPage extends StatelessWidget {
+  const Example40_SelectPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('选择结构')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, '选项1'),
+              child: const Text('选项1'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, '选项2'),
+              child: const Text('选项2'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
