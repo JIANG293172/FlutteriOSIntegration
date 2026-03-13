@@ -1901,3 +1901,98 @@ class _Example46_AnimatedContainerState extends State<Example46_AnimatedContaine
     );
   }
 }
+
+
+class Example47_AnimatedOpacity extends StatefulWidget {
+  const Example47_AnimatedOpacity({super.key});
+
+  @override
+  State<Example47_AnimatedOpacity> createState() => _Example47_AnimatedOpacityState();
+}
+
+class _Example47_AnimatedOpacityState extends State<Example47_AnimatedOpacity> {
+  double _opcity = 1.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('AnimatedOpacity示例')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedOpacity(
+                duration: const Duration(seconds: 1),
+                opacity: _opcity,
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  color: Colors.red,
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _opcity = _opcity == 1.0 ? 0.0 : 1.0;
+                  });
+                },
+                child: Text(_opcity == 1.0 ? '隐藏' : '显示'),
+              ),
+            ],
+          ),
+        )
+
+      ),
+
+    );
+  }
+}
+
+// class Example48_AnimatedSize extends StatefulWidget {
+
+//   const Example48_AnimatedSize({super.key});
+
+//   @override
+//   State<Example48_AnimatedSize> createState() => _Example48_AnimatedSizeState();
+// } 
+ 
+// class _Example48_AnimatedSizeState extends State<Example48_AnimatedSize>  with SingleTickerProviderStateMixin {
+//   bool _isLarge = false;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         appBar: AppBar(title: const Text('AnimatedSize示例')),
+//         body: Center(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               AnimatedSize(
+//                 vsync: this,
+//                 duration: const Duration(seconds: 1),
+//                 child: Container(
+//                   width: _isLarge ? 200 : 100,
+//                   height: _isLarge ? 200 : 100,
+//                   color: Colors.green,
+//                 ),
+//               ),
+//               const SizedBox(height: 20),
+//               ElevatedButton(
+//                 onPressed: () {
+//                   setState(() {
+//                     _isLarge = !_isLarge;
+//                   });
+//                 },
+//                 child: Text(_isLarge ? '收起' : '展开'),
+//               ),
+//             ],
+//           ),
+//         )
+//       ),
+//     );
+//   }
+// }
+ 

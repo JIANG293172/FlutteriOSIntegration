@@ -2228,6 +2228,9 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
+
+
+
 【动画篇（46-60）】
 Example46_AnimatedContainer_容器动画
 dart
@@ -2274,6 +2277,8 @@ class _Example46_AnimatedContainerState extends State<Example46_AnimatedContaine
     );
   }
 }
+
+
 Example47_AnimatedOpacity_透明度动画
 dart
 import 'package:flutter/material.dart';
@@ -2321,6 +2326,8 @@ class _Example47_AnimatedOpacityState extends State<Example47_AnimatedOpacity> {
     );
   }
 }
+
+
 Example48_AnimatedSize_尺寸动画
 dart
 import 'package:flutter/material.dart';
