@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlutterExamplePage extends StatelessWidget {
   const FlutterExamplePage({super.key});
@@ -98,7 +99,10 @@ class Example4_RowColumn extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(mainAxisAlignment: .center, children: const [Text('左边'), Text('中间'), Text('右边')]),
+            Row(
+              mainAxisAlignment: .center,
+              children: const [Text('左边'), Text('中间'), Text('右边')],
+            ),
             const SizedBox(height: 20),
             Column(children: [Text('上'), Text('中'), Text('下')]),
           ],
@@ -215,13 +219,18 @@ class Example8_ElevatedButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('普通按钮点击'))),
+                onPressed: () => ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('普通按钮点击'))),
                 child: const Text('ElevatedButton'),
               ),
               const SizedBox(height: 20),
               TextButton(onPressed: () {}, child: const Text('text button')),
               const SizedBox(height: 10),
-              OutlinedButton(onPressed: () {}, child: const Text('outlinedbutton')),
+              OutlinedButton(
+                onPressed: () {},
+                child: const Text('outlinedbutton'),
+              ),
               const SizedBox(height: 10),
               ElevatedButton(onPressed: null, child: const Text('禁用按钮')),
             ],
@@ -434,8 +443,14 @@ class Example15_AlertDialog extends StatelessWidget {
                   title: const Text('提示'),
                   content: const Text('这是一个提示'),
                   actions: [
-                    TextButton(onPressed: () => Navigator.pop(context), child: const Text('取消')),
-                    TextButton(onPressed: () => Navigator.pop(context), child: const Text('确定')),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('取消'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('确定'),
+                    ),
                   ],
                 );
               },
@@ -488,7 +503,9 @@ class Example17_BottomSheet extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () => showModalBottomSheet(
               context: context,
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+              ),
 
               builder: (context) => SizedBox(
                 height: 200,
@@ -525,7 +542,9 @@ class Example18_ListView extends StatelessWidget {
             title: Text(items[index]),
             leading: const Icon(Icons.list),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('点击了 ${items[index]}'))),
+            onTap: () => ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('点击了 ${items[index]}'))),
           ),
         ),
       ),
@@ -580,9 +599,17 @@ class Example20_Stack extends StatelessWidget {
               Container(width: 100, height: 100, color: Colors.blue),
               const Text(
                 '叠层文本',
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const Positioned(bottom: 10, right: 10, child: Icon(Icons.star, size: 30, color: Colors.yellow)),
+              const Positioned(
+                bottom: 10,
+                right: 10,
+                child: Icon(Icons.star, size: 30, color: Colors.yellow),
+              ),
             ],
           ),
         ),
@@ -595,7 +622,8 @@ class Example21_StatefullWidget extends StatefulWidget {
   const Example21_StatefullWidget({super.key});
 
   @override
-  State<Example21_StatefullWidget> createState() => _Example21_StatefullWidgetState();
+  State<Example21_StatefullWidget> createState() =>
+      _Example21_StatefullWidgetState();
 }
 
 class _Example21_StatefullWidgetState extends State<Example21_StatefullWidget> {
@@ -629,7 +657,8 @@ class Example22_ValueNotifier extends StatefulWidget {
   const Example22_ValueNotifier({super.key});
 
   @override
-  State<Example22_ValueNotifier> createState() => _Example22_ValueNotifierState();
+  State<Example22_ValueNotifier> createState() =>
+      _Example22_ValueNotifierState();
 }
 
 class _Example22_ValueNotifierState extends State<Example22_ValueNotifier> {
@@ -646,10 +675,14 @@ class _Example22_ValueNotifierState extends State<Example22_ValueNotifier> {
             children: [
               ValueListenableBuilder<int>(
                 valueListenable: _count,
-                builder: (context, value, child) => Text('点击次数 $value', style: const TextStyle(fontSize: 20)),
+                builder: (context, value, child) =>
+                    Text('点击次数 $value', style: const TextStyle(fontSize: 20)),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(onPressed: () => _count.value++, child: const Text('点击增加')),
+              ElevatedButton(
+                onPressed: () => _count.value++,
+                child: const Text('点击增加'),
+              ),
             ],
           ),
         ),
@@ -684,13 +717,17 @@ class Example23_Provider extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Consumer<Counter>(
-                  builder: (context, counter, child) =>
-                      Text('点击次数 ${counter.count}', style: const TextStyle(fontSize: 20)),
+                  builder: (context, counter, child) => Text(
+                    '点击次数 ${counter.count}',
+                    style: const TextStyle(fontSize: 20),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Consumer<Counter>(
-                  builder: (context, counter, child) =>
-                      ElevatedButton(onPressed: counter.increment, child: const Text('点击增加')),
+                  builder: (context, counter, child) => ElevatedButton(
+                    onPressed: counter.increment,
+                    child: const Text('点击增加'),
+                  ),
                 ),
               ],
             ),
@@ -720,10 +757,18 @@ class Example24_GetX extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Obx(() => Text('点击次数: ${controller.count.value}', style: const TextStyle(fontSize: 20))),
+              Obx(
+                () => Text(
+                  '点击次数: ${controller.count.value}',
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
 
               const SizedBox(height: 20),
-              ElevatedButton(onPressed: controller.increment, child: const Text('点击增加')),
+              ElevatedButton(
+                onPressed: controller.increment,
+                child: const Text('点击增加'),
+              ),
             ],
           ),
         ),
@@ -737,11 +782,16 @@ class CountInhritedWidget extends InheritedWidget {
   final Function() increment;
   final Widget child;
 
-  const CountInhritedWidget({super.key, required this.count, required this.increment, required this.child})
-    : super(child: child);
+  const CountInhritedWidget({
+    super.key,
+    required this.count,
+    required this.increment,
+    required this.child,
+  }) : super(child: child);
 
   static CountInhritedWidget? of(BuildContext context) {
-    final widget = context.dependOnInheritedWidgetOfExactType<CountInhritedWidget>();
+    final widget = context
+        .dependOnInheritedWidgetOfExactType<CountInhritedWidget>();
     assert(widget != null, 'CountInhritedWidget not found in context');
     return widget;
   }
@@ -756,7 +806,8 @@ class Example25_InheritedWidget extends StatefulWidget {
   const Example25_InheritedWidget({super.key});
 
   @override
-  State<Example25_InheritedWidget> createState() => _Example25_InheritedWidget();
+  State<Example25_InheritedWidget> createState() =>
+      _Example25_InheritedWidget();
 }
 
 class _Example25_InheritedWidget extends State<Example25_InheritedWidget> {
@@ -788,7 +839,10 @@ class CountDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widget = CountInhritedWidget.of(context);
-    return Text('点击次数: ${widget?.count ?? 0}', style: const TextStyle(fontSize: 20));
+    return Text(
+      '点击次数: ${widget?.count ?? 0}',
+      style: const TextStyle(fontSize: 20),
+    );
   }
 }
 
@@ -798,7 +852,10 @@ class IncrementButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widget = CountInhritedWidget.of(context);
-    return FloatingActionButton(onPressed: widget?.increment, child: const Icon(Icons.add));
+    return FloatingActionButton(
+      onPressed: widget?.increment,
+      child: const Icon(Icons.add),
+    );
   }
 }
 
@@ -806,7 +863,8 @@ class Example26_SetState_Async extends StatefulWidget {
   const Example26_SetState_Async({super.key});
 
   @override
-  State<Example26_SetState_Async> createState() => _Example26_SetState_AsyncState();
+  State<Example26_SetState_Async> createState() =>
+      _Example26_SetState_AsyncState();
 }
 
 class _Example26_SetState_AsyncState extends State<Example26_SetState_Async> {
@@ -834,7 +892,10 @@ class _Example26_SetState_AsyncState extends State<Example26_SetState_Async> {
             children: [
               Text(_status, style: const TextStyle(fontSize: 20)),
               const SizedBox(height: 20),
-              ElevatedButton(onPressed: _simulateAsyncOperation, child: const Text('模拟异步操作')),
+              ElevatedButton(
+                onPressed: _simulateAsyncOperation,
+                child: const Text('模拟异步操作'),
+              ),
             ],
           ),
         ),
@@ -881,20 +942,25 @@ class Example27_MutiProvider extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Consumer2<Example27_Counter, Example27_ThemeModel>(
-                    builder: (context, counter, theme, _) =>
-                        Text('计数 ${counter.count}', style: TextStyle(fontSize: 20, color: theme.color)),
+                    builder: (context, counter, theme, _) => Text(
+                      '计数 ${counter.count}',
+                      style: TextStyle(fontSize: 20, color: theme.color),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                        onPressed: () => innerContext.read<Example27_Counter>().increment(),
+                        onPressed: () =>
+                            innerContext.read<Example27_Counter>().increment(),
                         child: const Text('增加'),
                       ),
                       const SizedBox(width: 20),
                       ElevatedButton(
-                        onPressed: () => innerContext.read<Example27_ThemeModel>().changeColor(),
+                        onPressed: () => innerContext
+                            .read<Example27_ThemeModel>()
+                            .changeColor(),
                         child: const Text('切换颜色'),
                       ),
                     ],
@@ -913,7 +979,8 @@ class Example29_StreamBuilder extends StatefulWidget {
   const Example29_StreamBuilder({super.key});
 
   @override
-  State<Example29_StreamBuilder> createState() => _Example29_StreamBuilderState();
+  State<Example29_StreamBuilder> createState() =>
+      _Example29_StreamBuilderState();
 }
 
 class _Example29_StreamBuilderState extends State<Example29_StreamBuilder> {
@@ -938,9 +1005,15 @@ class _Example29_StreamBuilderState extends State<Example29_StreamBuilder> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Text('加载中...', style: TextStyle(fontSize: 20));
               } else if (snapshot.hasError) {
-                return Text('错误: ${snapshot.error}', style: const TextStyle(fontSize: 20, color: Colors.red));
+                return Text(
+                  '错误: ${snapshot.error}',
+                  style: const TextStyle(fontSize: 20, color: Colors.red),
+                );
               } else {
-                return Text('数据流: ${snapshot.data}', style: const TextStyle(fontSize: 20));
+                return Text(
+                  '数据流: ${snapshot.data}',
+                  style: const TextStyle(fontSize: 20),
+                );
               }
             },
           ),
@@ -970,9 +1043,15 @@ class Example30_FutureBuilder extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               } else if (snapshot.hasError) {
-                return Text('请求失败 ${snapshot.error}', style: const TextStyle(fontSize: 20, color: Colors.red));
+                return Text(
+                  '请求失败 ${snapshot.error}',
+                  style: const TextStyle(fontSize: 20, color: Colors.red),
+                );
               } else {
-                return Text('请求结果${snapshot.data}', style: const TextStyle(fontSize: 20));
+                return Text(
+                  '请求结果${snapshot.data}',
+                  style: const TextStyle(fontSize: 20),
+                );
               }
             },
           ),
@@ -1001,7 +1080,10 @@ class _Example31_GetX_Storage extends State<Example31_GetX_Storage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('存储值: ${_box.read('counter') ?? 0}', style: const TextStyle(fontSize: 20)),
+              Text(
+                '存储值: ${_box.read('counter') ?? 0}',
+                style: const TextStyle(fontSize: 20),
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
@@ -1026,7 +1108,7 @@ class _Example31_GetX_Storage extends State<Example31_GetX_Storage> {
   }
 }
 
-class UserModel with ChangeNotifier {
+class Example32_UserModel with ChangeNotifier {
   String _name = 'Flutter';
 
   int _age = 18;
@@ -1050,36 +1132,175 @@ class Example32_Provider_Selector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => Example32_UserModel(),
+      child: MaterialApp(
+        home: Builder(
+          builder: (innerContext) => Scaffold(
+            appBar: AppBar(title: const Text('Example32_Provider')),
+            body: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Selector<Example32_UserModel, String>(
+                    selector: (context, model) => model.name,
+                    builder: (context, name, _) =>
+                        Text('姓名:$name', style: const TextStyle(fontSize: 20)),
+                  ),
+                  const SizedBox(height: 20),
+                  Selector<Example32_UserModel, int>(
+                    selector: (context, model) => model.age,
+                    builder: (context, age, _) =>
+                        Text('年龄:$age', style: const TextStyle(fontSize: 20)),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () => innerContext
+                        .read<Example32_UserModel>()
+                        .changeName('Flutter Dev'),
+                    child: const Text('修改姓名'),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () =>
+                        innerContext.read<Example32_UserModel>().changAge(30),
+                    child: const Text('修改年龄'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+enum CounterEvent { increment, decrement }
+
+class CounterBloc extends Bloc<CounterEvent, int> {
+  CounterBloc() : super(0) {
+    on<CounterEvent>((event, emit) {
+      switch (event) {
+        case CounterEvent.increment:
+          emit(state + 1);
+          break;
+        case CounterEvent.decrement:
+          emit(state - 1);
+          break;
+      }
+    });
+  }
+}
+
+class Example33_Bloc extends StatelessWidget {
+  const Example33_Bloc({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => CounterBloc(),
+      child: Builder(
+        builder: (innerContext) => Scaffold(
+          appBar: AppBar(title: const Text('Bloc示例')),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BlocBuilder<CounterBloc, int>(
+                  builder: (context, state) =>
+                      Text('计数$state', style: const TextStyle(fontSize: 20)),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => innerContext.read<CounterBloc>().add(
+                        CounterEvent.decrement,
+                      ),
+                      child: const Text('--'),
+                    ),
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: () => innerContext.read<CounterBloc>().add(
+                        CounterEvent.increment,
+                      ),
+                      child: const Text('++'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example34_AnimatedBuilder extends StatefulWidget {
+  const Example34_AnimatedBuilder({super.key});
+
+  @override
+  State<Example34_AnimatedBuilder> createState() =>
+      _Example34_AnimatedBuilderState();
+}
+
+class _Example34_AnimatedBuilderState extends State<Example34_AnimatedBuilder>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+    _animation = Tween<double>(begin: 0, end: 100).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Example32_Provider')),
-        body: Padding(
-          padding: const EdgeInsets.all(20),
+        appBar: AppBar(title: const Text('Example34_AnimatedBuilder')),
+        body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Selector<UserModel, String>(
-                selector: (context, model) => model.name,
-                builder: (context, name, _) => Text('姓名:$name', style: const TextStyle(fontSize: 20)),
+              AnimatedBuilder(
+                animation: _animation,
+                builder: (context, child) => Container(
+                  width: _animation.value,
+                  height: _animation.value,
+                  color: Colors.blue,
+                  child: child,
+                ),
+                child: const Center(
+                  child: Text('动画容器', style: TextStyle(color: Colors.white)),
+                ),
               ),
-
               const SizedBox(height: 20),
-
-              Selector<UserModel, int>(
-                selector: (context, model) => model.age,
-                builder: (context, age, _) => Text('年龄:$age', style: const TextStyle(fontSize: 20)),
-              ),
-
-              const SizedBox(height: 20),
-
               ElevatedButton(
-                onPressed: () => context.read<UserModel>().changeName('Flutter Dev'),
-                child: const Text('修改姓名'),
+                onPressed: () {
+                  if (_controller.status == AnimationStatus.completed) {
+                    _controller.reverse();
+                  } else {
+                    _controller.forward();
+                  }
+                },
+                child: const Text('播放,方向动画'),
               ),
-
-              const SizedBox(height: 10),
-
-              ElevatedButton(onPressed: () => context.read<UserModel>().changAge(30), child: const Text('修改年龄')),
             ],
           ),
         ),
