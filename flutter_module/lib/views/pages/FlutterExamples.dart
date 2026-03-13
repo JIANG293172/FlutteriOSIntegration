@@ -1659,3 +1659,26 @@ class Example40_SelectPage extends StatelessWidget {
     );
   }
 }
+
+class Example41_PageView extends StatelessWidget {
+  const Example41_PageView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('PageView实例')),
+        body: PageView(
+          scrollDirection: .horizontal,
+          pageSnapping: true,
+          onPageChanged: (index) => print('当期页面 $index'),
+          children: const [
+            Center(child: Text('页面1')),
+            Center(child: Text('页面2')),
+            Center(child: Text('页面3')),
+          ],
+        ),
+      ),
+    );
+  }
+}
