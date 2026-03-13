@@ -1682,3 +1682,41 @@ class Example41_PageView extends StatelessWidget {
     );
   }
 }
+
+class Example42_BottomNavigationBar extends StatefulWidget {
+  const Example42_BottomNavigationBar({super.key});
+
+  @override
+  State<Example42_BottomNavigationBar> createState() =>
+      _Example42_BottomNavigationBar();
+}
+
+class _Example42_BottomNavigationBar
+    extends State<Example42_BottomNavigationBar> {
+  int _currentIndex = 0;
+
+  final List<Widget> _page = const [
+    Center(child: Text('首页', style: TextStyle(fontSize: 30))),
+    Center(child: Text('消息', style: TextStyle(fontSize: 30))),
+    Center(child: Text('我的', style: TextStyle(fontSize: 30))),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('底部导航栏')),
+        body: _page[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) => setState(() => _currentIndex = index),
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: '首页'),
+            BottomNavigationBarItem(icon: Icon(Icons.message), label: '消息'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: '我的'),
+          ],
+        ),
+      ),
+    );
+  }
+}
