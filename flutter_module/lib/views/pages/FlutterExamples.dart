@@ -1025,3 +1025,65 @@ class _Example31_GetX_Storage extends State<Example31_GetX_Storage> {
     );
   }
 }
+
+class UserModel with ChangeNotifier {
+  String _name = 'Flutter';
+
+  int _age = 18;
+
+  String get name => _name;
+  int get age => _age;
+
+  void changeName(String name) {
+    _name = name;
+    notifyListeners();
+  }
+
+  void changAge(int age) {
+    _age = age;
+    notifyListeners();
+  }
+}
+
+class Example32_Provider_Selector extends StatelessWidget {
+  const Example32_Provider_Selector({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Example32_Provider')),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Selector<UserModel, String>(
+                selector: (context, model) => model.name,
+                builder: (context, name, _) => Text('姓名:$name', style: const TextStyle(fontSize: 20)),
+              ),
+
+              const SizedBox(height: 20),
+
+              Selector<UserModel, int>(
+                selector: (context, model) => model.age,
+                builder: (context, age, _) => Text('年龄:$age', style: const TextStyle(fontSize: 20)),
+              ),
+
+              const SizedBox(height: 20),
+
+              ElevatedButton(
+                onPressed: () => context.read<UserModel>().changeName('Flutter Dev'),
+                child: const Text('修改姓名'),
+              ),
+
+              const SizedBox(height: 10),
+
+              ElevatedButton(onPressed: () => context.read<UserModel>().changAge(30), child: const Text('修改年龄')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
