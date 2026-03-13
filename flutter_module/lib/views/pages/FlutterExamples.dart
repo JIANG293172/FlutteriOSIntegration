@@ -1856,3 +1856,48 @@ class Example45DetailPage extends StatelessWidget {
     );
   }
 }
+
+
+class Example46_AnimatedContainer extends StatefulWidget {
+  const Example46_AnimatedContainer({super.key});
+
+  @override
+  State<Example46_AnimatedContainer> createState() => _Example46_AnimatedContainerState();
+}
+
+class _Example46_AnimatedContainerState extends State<Example46_AnimatedContainer> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('AnimatedContainer示例')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedContainer(
+                duration: const Duration(seconds: 1),
+                width: _isExpanded ? 200 : 100,
+                height: _isExpanded ? 200 : 100,
+                color: Colors.blue,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _isExpanded = !_isExpanded;
+                  });
+                },
+                child: Text(_isExpanded ? '收起' : '展开'),
+              ),
+            ],
+          ),
+        )
+
+      ),
+
+    );
+  }
+}
