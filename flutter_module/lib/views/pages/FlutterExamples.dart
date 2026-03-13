@@ -1308,3 +1308,45 @@ class _Example34_AnimatedBuilderState extends State<Example34_AnimatedBuilder>
     );
   }
 }
+
+class Example35_StatefulBuilder extends StatefulWidget {
+  const Example35_StatefulBuilder({super.key});
+
+  @override
+  State<Example35_StatefulBuilder> createState() =>
+      _Example35_StatefulBuilderState();
+}
+
+class _Example35_StatefulBuilderState extends State<Example35_StatefulBuilder> {
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Example35_StatefulBuilder')),
+        body: Center(
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('当前计数: $count', style: const TextStyle(fontSize: 20)),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        count++;
+                      });
+                    },
+                    child: const Text('局部增加'),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}

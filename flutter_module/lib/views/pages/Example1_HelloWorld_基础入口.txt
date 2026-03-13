@@ -1412,6 +1412,8 @@ class Example31_GetX_Storage extends StatelessWidget {
     );
   }
 }
+
+
 Example32_Provider_Selector 优化
 dart
 import 'package:flutter/material.dart';
@@ -1476,6 +1478,8 @@ class Example32_Provider_Selector extends StatelessWidget {
     );
   }
 }
+
+
 Example33_Bloc_基础使用
 dart
 import 'package:flutter/material.dart';
@@ -2338,10 +2342,3 @@ class _Example48_AnimatedSizeState extends State<Example48_AnimatedSize>
     );
   }
 }
-Example49_AnimatedPositioned_位移动画
-dart
-import 'package:flutter/material.dart';
-
-void main() => runApp(const Example49_AnimatedPositioned());
-
-class
