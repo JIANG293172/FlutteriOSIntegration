@@ -1395,3 +1395,62 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
+
+class Example37_RouteParams extends StatelessWidget {
+  const Example37_RouteParams({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(title: '路由参数传递', home: const Example37_HomePage());
+  }
+}
+
+class Example37_HomePage extends StatelessWidget {
+  const Example37_HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Example37_RouteParams')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  const Example37_DetailPage(name: '张三', age: 25),
+            ),
+          ),
+          child: const Text('跳转详情页'),
+        ),
+      ),
+    );
+  }
+}
+
+class Example37_DetailPage extends StatelessWidget {
+  final String name;
+  final int age;
+
+  const Example37_DetailPage({
+    super.key,
+    required this.name,
+    required this.age,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Example37_DetailPage')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('姓名: $name', style: const TextStyle(fontSize: 20)),
+            Text('年龄: $age', style: const TextStyle(fontSize: 20)),
+          ],
+        ),
+      ),
+    );
+  }
+}
