@@ -1752,3 +1752,107 @@ class Example43_Tabbar extends StatelessWidget {
     );
   }
 }
+
+
+class Example44Drawer extends StatelessWidget {
+  const Example44Drawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('侧边栏drawer')),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(color: Colors.blue),
+                child: Text(
+                  '侧边栏头',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+              ListTile(
+                title: const Text('选项1'),
+                leading: const Icon(Icons.home),
+                onTap: () => Navigator.pop(context),
+              ),
+              ListTile(
+                title: const Text('设置'),
+                leading: const Icon(Icons.settings),
+                onTap: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Example45_GetX_Route extends StatelessWidget {
+  const Example45_GetX_Route({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      initialRoute: '/',
+      getPages: [
+        GetPage(name: '/', page: () => const Example45HomePage()),
+        GetPage(name: '/detail', page: () => const Example45DetailPage()),
+      ],
+
+    );
+  }
+}
+
+class Example45HomePage extends StatelessWidget {
+
+  const Example45HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('GetX路由示例')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () => Get.toNamed('/detail'),
+              child: const Text('跳转到第一个页面'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () => Get.toNamed('/detail'),
+              child: const Text('跳转到第二个页面'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () => Get.toNamed('/detail'),
+              child: const Text('跳转到第三个页面'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Example45DetailPage extends StatelessWidget {
+  const Example45DetailPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('详情页')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () => Get.back(),
+          child: const Text('返回首页'),
+        ),
+      ),
+    );
+  }
+}
