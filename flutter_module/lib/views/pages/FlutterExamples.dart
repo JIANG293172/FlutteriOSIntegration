@@ -1720,3 +1720,35 @@ class _Example42_BottomNavigationBar
     );
   }
 }
+
+class Example43_Tabbar extends StatelessWidget {
+  const Example43_Tabbar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('TabBar实例'),
+            bottom: const TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.home), text: '首页'),
+                Tab(icon: Icon(Icons.message), text: '消息'),
+                Tab(icon: Icon(Icons.person), text: '我的'),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              Center(child: Text('首页内容')),
+              Center(child: Text('消息内容')),
+              Center(child: Text('我的内容')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
