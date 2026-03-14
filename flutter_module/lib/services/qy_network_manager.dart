@@ -355,7 +355,7 @@ class QYNetworkManager {
     var timeStamp = "$timeInterval";
     var jsonString = dicToSortJSON(params) ?? "";
 
-    var sign = jsonString + timeStamp + "J5i6UkJi8voBEEyE1g5q";
+    var sign = "$jsonString${timeStamp}J5i6UkJi8voBEEyE1g5q";
     var md5Sign = md5.convert(utf8.encode(sign)).toString().toUpperCase();
 
     // 获取设备信息

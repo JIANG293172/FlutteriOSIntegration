@@ -780,6 +780,7 @@ class Example24_GetX extends StatelessWidget {
 class CountInhritedWidget extends InheritedWidget {
   final int count;
   final Function() increment;
+  @override
   final Widget child;
 
   const CountInhritedWidget({
@@ -985,7 +986,7 @@ class Example29_StreamBuilder extends StatefulWidget {
 
 class _Example29_StreamBuilderState extends State<Example29_StreamBuilder> {
   late Stream<int> _countStream;
-  int _count = 0;
+  final int _count = 0;
 
   @override
   void initState() {
@@ -1352,6 +1353,8 @@ class _Example35_StatefulBuilderState extends State<Example35_StatefulBuilder> {
 }
 
 class Example36_MaterialPageRoute extends StatelessWidget {
+  const Example36_MaterialPageRoute({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(title: '基础路由', home: const HomePage());

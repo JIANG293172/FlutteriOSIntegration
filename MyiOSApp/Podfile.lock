@@ -5,16 +5,25 @@ PODS:
   - FlutterPluginRegistrant (0.0.1):
     - device_info_plus
     - Flutter
+    - path_provider_foundation
     - shared_preferences_foundation
+    - url_launcher_ios
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - url_launcher_ios (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - device_info_plus (from `../flutter_module/.ios/.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `../flutter_module/.ios/Flutter`)
   - FlutterPluginRegistrant (from `../flutter_module/.ios/Flutter/FlutterPluginRegistrant`)
+  - path_provider_foundation (from `../flutter_module/.ios/.symlinks/plugins/path_provider_foundation/darwin`)
   - shared_preferences_foundation (from `../flutter_module/.ios/.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - url_launcher_ios (from `../flutter_module/.ios/.symlinks/plugins/url_launcher_ios/ios`)
 
 EXTERNAL SOURCES:
   device_info_plus:
@@ -23,14 +32,20 @@ EXTERNAL SOURCES:
     :path: "../flutter_module/.ios/Flutter"
   FlutterPluginRegistrant:
     :path: "../flutter_module/.ios/Flutter/FlutterPluginRegistrant"
+  path_provider_foundation:
+    :path: "../flutter_module/.ios/.symlinks/plugins/path_provider_foundation/darwin"
   shared_preferences_foundation:
     :path: "../flutter_module/.ios/.symlinks/plugins/shared_preferences_foundation/darwin"
+  url_launcher_ios:
+    :path: "../flutter_module/.ios/.symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
   device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  FlutterPluginRegistrant: 615af88b289cc1d964357d0c69a8bdec8f0f49b5
+  FlutterPluginRegistrant: 907002c662ca46234d61bb7dc4ab889e513c3fcb
+  path_provider_foundation: 0b743cbb62d8e47eab856f09262bb8c1ddcfe6ba
   shared_preferences_foundation: 5086985c1d43c5ba4d5e69a4e8083a389e2909e6
+  url_launcher_ios: bb13df5870e8c4234ca12609d04010a21be43dfa
 
 PODFILE CHECKSUM: 169cd9ee2f10afde1559b85498c019cf04133260
 

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_module/views/pages/FlutterExamples.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../viewmodels/car_control_viewmodel.dart';
 import '../../services/router_service.dart';
-import '../../services/qy_network_manager.dart';
 import 'car_control_page.dart';
 import 'login_page.dart';
 

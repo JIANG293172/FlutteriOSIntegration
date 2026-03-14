@@ -37,7 +37,7 @@ class RouterService {
       return result;
     } catch (e) {
       print('RouterService.invoke error: $e');
-      throw e;
+      rethrow;
     }
   }
 

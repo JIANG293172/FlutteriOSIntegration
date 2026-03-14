@@ -22,7 +22,7 @@ class ChargeTile extends StatelessWidget {
       child: Column(
         children: [
           Text(title, style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
-          const SizedBox(height: 6),
+          const SizedBox(height: 10),
           Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
         ],
       ),
