@@ -12,6 +12,13 @@
             "deviceId": "13CE82F4-3AE1-453B-94C6-EC3A9A231062"
         },
         {
+            "name": "flutter_module (iOS Simulator - iPhone 16e)",
+            "cwd": "flutter_module",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "FE43610D-3F70-4A39-A45A-9FC45BDEB525"
+        },
+        {
             "name": "flutter_module (iOS Physical Device - taojiang)",
             "cwd": "flutter_module",
             "request": "launch",
